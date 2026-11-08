@@ -1,0 +1,50 @@
+name: Publicar site BrasilCord
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Obter arquivos públicos
+        uses: actions/checkout@v4
+
+      - name: Verificar site estático
+        shell: bash
+        run: |
+          test -s docs/index.html
+          test -s docs/styles.css
+          test -s docs/site.js
+          test -s docs/favicon.svg
+          node --check docs/site.js
+          ! grep -Eq 'password|DATABASE_URL|RESEND_API_KEY|EMAIL_OTP_SECRET|BRASILCORD_OWNER_USER_ID' docs/index.html
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Empacotar site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./docs
+
+      - name: Publicar no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
