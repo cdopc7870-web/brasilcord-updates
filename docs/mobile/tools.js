@@ -35,12 +35,14 @@
  const discover=btn('🌎 Explorar',()=>openDiscover(),'mobile-header-action');
  const inbox=btn('📨 Pedidos',()=>openInbox(),'mobile-header-action');
  const search=btn('⌕ Buscar',()=>openSearch(),'mobile-header-action');
+ const polls=btn('🗳 Enquetes',()=>openPolls(),'mobile-header-action');
  top.insertBefore(tools,$('user-name'));
  top.insertBefore(server,$('user-name'));
  top.insertBefore(discover,$('user-name'));
  top.insertBefore(inbox,$('user-name'));
  top.insertBefore(search,$('user-name'));
- function updateButtons(){for(const b of [tools,server,discover,inbox,search])b.hidden=!token;server.hidden=!token||!community;search.hidden=!token||(!channel&&!peer);}
+ top.insertBefore(polls,$('user-name'));
+ function updateButtons(){for(const b of [tools,server,discover,inbox,search,polls])b.hidden=!token;server.hidden=!token||!community;search.hidden=!token||(!channel&&!peer);polls.hidden=!token||!channel;}
  updateButtons();
  function field(label,value='',limit=120,kind='input'){
    const wrap=create('label',label,'advanced-field');
@@ -136,6 +138,44 @@
        btn('Recusar',async()=>{await request('/dm-requests/'+item.id+'/close','POST');await openInbox();},'danger'));
      row.append(controls);box.append(row);
    }
+ }
+ async function openPolls(){
+   if(!channel)return;
+   const target=channel,box=open('🗳 Enquetes · #'+channel.name);
+   box.append(create('p','Vote uma vez por enquete. Você pode mudar seu voto enquanto estiver aberta.'));
+   const list=create('div');box.append(list);
+   const load=async()=>{
+     list.replaceChildren();status('Carregando enquetes…');
+     const data=await request('/channels/'+target.id+'/polls');status('');
+     if(!data.polls?.length)list.append(create('p','Este canal ainda não possui enquetes.'));
+     for(const poll of data.polls||[]){
+       const card=create('article',null,'advanced-card'),head=create('strong',poll.question);
+       card.append(head,create('small','Criada por '+poll.author+' · termina em '+new Date(poll.endsAt).toLocaleString('pt-BR')));
+       const expired=new Date(poll.endsAt)<=new Date();
+       const total=poll.counts.reduce((sum,n)=>sum+n,0);
+       for(const [i,answer] of poll.options.entries()){
+         const percent=total?Math.round(poll.counts[i]/total*100):0;
+         const selected=poll.myVote===i;
+         const action=btn((selected?'✓ ':'')+answer+' · '+poll.counts[i]+' voto(s) · '+percent+'%',async()=>{
+           await request('/polls/'+poll.id+'/vote','POST',{optionIndex:i});await load();
+         },'mobile-poll-option');
+         action.disabled=expired;card.append(action);
+       }
+       if(expired)card.append(create('small','Enquete encerrada.'));
+       list.append(card);
+     }
+   };
+   if(community?.role==='owner'||community?.permissions?.send_messages){
+     box.append(btn('+ Criar enquete',async()=>{
+       const question=prompt('Pergunta (5 a 180 caracteres):');if(!question)return;
+       const raw=prompt('Opções separadas por ponto e vírgula (;), de 2 até 8:','Sim;Não');if(!raw)return;
+       const options=raw.split(';').map(s=>s.trim()).filter(Boolean);
+       const minutes=Number(prompt('Duração: 60, 360, 1440, 4320 ou 10080 minutos','1440'));
+       await request('/channels/'+target.id+'/polls','POST',{question,options,durationMinutes:minutes});
+       await load();toast('Enquete criada.');
+     },'primary'));
+   }
+   await load();
  }
  async function openSearch(){
    const box=open('Buscar mensagens');
