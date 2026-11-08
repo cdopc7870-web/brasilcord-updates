@@ -155,6 +155,8 @@
       for(const item of items){
         const author=privateChat?(item.sender_id===state.user.id?state.user:state.peer):item.author;
         const row=node('article',null,'message'+(author?.id===state.user.id?' message-self':''));
+        if(!privateChat&&state.user?.username&&String(item.content||'').toLowerCase().includes('@'+state.user.username.toLowerCase()))
+          row.classList.add('message-mentioned');
         row.dataset.messageId=item.id;row.dataset.messageKind=privateChat?'dm':'channel';
         row.append(avatar(author));
         const body=node('div',null,'message-body'),head=node('div',null,'message-head');
@@ -238,6 +240,7 @@
         copy.append(node('strong',labelOf(item)),node('small','@'+item.username));
         const actions=node('div',null,'card-actions');
         if(item.status==='accepted')actions.append(button('Mensagem',()=>openDM(item)));
+        actions.append(button('Perfil',()=>document.dispatchEvent(new CustomEvent('bc:mobile-user-profile',{detail:{id:item.id}}))));
         if(item.status==='pending'&&item.direction==='received')actions.append(button('Aceitar',async()=>{
           await api('/friends/'+item.id+'/accept',{method:'POST'});await loadFriends();await friendsView();
         }));
