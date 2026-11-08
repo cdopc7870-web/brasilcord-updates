@@ -507,8 +507,10 @@
      let data;try{data=JSON.parse(e.data);}catch{return;}
      if(data.type==='message'||data.type==='community-moderation'){
        document.dispatchEvent(new Event('bc:mobile-refresh'));
-       if(data.type==='message'&&document.hidden&&Notification.permission==='granted'){
-         const notification=new Notification('BrasilCord • Nova mensagem',{body:'Você recebeu uma mensagem na sua comunidade.',icon:'./icon-192.png'});
+       const mentioned=data.type==='message'&&user?.username&&String(data.message?.content||'').toLowerCase().includes('@'+user.username.toLowerCase());
+       if(mentioned)toast('🔔 Mencionaram @'+user.username+' em uma mensagem.');
+       if(data.type==='message'&&document.hidden&&'Notification' in window&&Notification.permission==='granted'){
+         const notification=new Notification(mentioned?'BrasilCord • Você foi mencionado':'BrasilCord • Nova mensagem',{body:'Você recebeu uma mensagem na sua comunidade.',icon:'./icon-192.png'});
          setTimeout(()=>notification.close(),6000);
        }
        if(data.type==='community-moderation')toast('Moderação: '+data.reason,true);
@@ -525,6 +527,7 @@
    };
    instance.onclose=()=>{if(socket===instance&&token){socket=null;setTimeout(()=>{if(token&&document.visibilityState==='visible')connectWS();},5000);}};
  }
+ document.addEventListener('bc:mobile-user-profile',e=>{if(token&&e.detail?.id)void showProfile(e.detail.id).catch(err=>toast(err.message,true));});
  document.addEventListener('bc:mobile-session',e=>{token=e.detail.token;user=e.detail.user;connectWS();updateButtons();refreshComposer();});
  document.addEventListener('bc:mobile-community',e=>{community=e.detail.community;server.hidden=false;});
  document.addEventListener('bc:mobile-context',e=>{peer=e.detail.peer||null;channel=e.detail.channel||null;community=e.detail.community||null;updateButtons();refreshComposer();});
