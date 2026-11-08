@@ -52,3 +52,6 @@
 @media(max-width:950px){.top-actions{gap:4px;flex-wrap:wrap;justify-content:end}.mobile-header-action{padding:7px;font-size:10px}.service-state{display:none}}
 @media(max-width:690px){.mobile-call-inner,.advanced-shell{padding:15px}.mobile-call-controls{grid-template-columns:repeat(3,minmax(0,1fr))}.mobile-call-controls button{padding:10px 5px;font-size:11px}.mobile-call-people{grid-template-columns:repeat(2,minmax(0,1fr))}.mobile-call-person{padding:9px}.mobile-header-action{padding:6px;font-size:10px}.top-actions{max-width:calc(100vw - 170px)}.topbar{height:auto;min-height:var(--bar);padding-top:5px;padding-bottom:5px}.layout{height:calc(100dvh - 75px - var(--bar))}.mobile-message-actions button{font-size:9px;padding:4px 6px}}
 @media(max-width:420px){.mobile-call-people{grid-template-columns:1fr 1fr}.mobile-call-controls{grid-template-columns:1fr 1fr}.mobile-advanced{max-height:96dvh}.mobile-header-action{font-size:0;min-width:29px;padding:7px 4px}.mobile-header-action:first-letter{font-size:16px}}
+
+.mobile-call-person.speaking{border-color:#46ed8f;background:linear-gradient(130deg,#1c6647,#205948);box-shadow:0 0 0 1px #5cffa2,0 0 22px #27e78249}
+.mobile-call-person.speaking .mobile-call-avatar{border-color:#42ff95;box-shadow:0 0 0 3px #37f6a486,0 0 21px #49ff9399}
