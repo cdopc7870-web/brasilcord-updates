@@ -1,0 +1,65 @@
+
+/* BrasilCord Nature — identidade visual da tela de abertura, aplicada ao site. */
+:root{--bg:#031c17;--surface:#0e2926;--surface2:#173b35;--line:rgba(192,255,208,.19);--green:#67ffa3;--yellow:#ffdf36;--blue:#72d8f4;--muted:#b7d5c8}
+body{background:radial-gradient(ellipse at 50% 6%,#10644680,transparent 40%),radial-gradient(ellipse at 95% 40%,#137b6770,transparent 38%),#051d18}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.06;background-image:radial-gradient(circle,#f7ffdf 1px,transparent 1.5px);background-size:30px 30px;z-index:0}
+.container{width:min(1230px,calc(100% - 56px))}
+.site-header{background:rgba(3,24,22,.78);border-bottom:1px solid #b1edbc30;backdrop-filter:blur(24px) saturate(155%)}
+.brand{font-size:24px;letter-spacing:-.06em}.brand-mark{background:linear-gradient(137deg,#ffef42,#28d473 52%,#0093b5);border:1px solid #ffffff65;box-shadow:0 0 30px #52e6794d}.brand-accent{color:#ffde38}
+.main-nav>a{color:#d1eddf;font-size:13px}.main-nav .nav-download{background:#ffde39;color:#064029;border:1px solid #fff6a2;box-shadow:0 5px 23px #ffdf3e38}.main-nav .nav-download:hover{background:#f6f684;color:#064029}
+.hero{width:100%;max-width:none;min-height:790px;isolation:isolate;overflow:hidden;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,5vw,85px);padding:130px max(30px,calc((100% - 1230px)/2)) 145px;background:linear-gradient(180deg,#07835b 0%,#147a66 35%,#083f44 72%,#072b30 100%)}
+.nature-landscape{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.nature-stars{position:absolute;inset:0;background:radial-gradient(circle at 10% 20%,#eeffa7 0 2px,transparent 3px),radial-gradient(circle at 82% 19%,#fffdb2 0 2px,transparent 3px),radial-gradient(circle at 67% 12%,#ffffb4 0 1px,transparent 2px);opacity:.5}
+.nature-sun{position:absolute;top:7%;left:57%;width:clamp(205px,28vw,430px);aspect-ratio:1;border-radius:50%;transform:translateX(-50%);background:radial-gradient(circle at 36% 32%,#fff7b1,#ffec47 43%,#fdd43e 70%,#69e9a7 100%);box-shadow:0 0 0 20px #ffff7712,0 0 100px #f9e95675,0 0 210px #feec6465;animation:nature-sun-pulse 8s ease-in-out infinite}
+.nature-mountain{position:absolute;left:-5%;width:110%;bottom:10%;height:49%;transform-origin:bottom;animation:nature-arrive 1.6s ease-out both}
+.nature-mountain-back{background:linear-gradient(160deg,#21bb83,#087254 75%);clip-path:polygon(0 49%,9% 32%,19% 45%,28% 10%,38% 41%,52% 13%,66% 47%,78% 9%,90% 44%,100% 20%,100% 100%,0 100%);opacity:.88}
+.nature-mountain-front{bottom:0;height:36%;background:linear-gradient(160deg,#08794e,#03523e 66%,#043f37);clip-path:polygon(0 30%,10% 14%,19% 39%,32% 7%,44% 37%,58% 12%,70% 40%,82% 15%,92% 32%,100% 17%,100% 100%,0 100%);animation-delay:.15s}
+.nature-river{position:absolute;bottom:-5%;left:-5%;right:-5%;height:25%;background:linear-gradient(171deg,#90ffe4,#2cc3ac 28%,#087b91 65%,#03485e);clip-path:polygon(0 35%,15% 12%,28% 28%,46% 8%,61% 35%,82% 13%,100% 28%,100% 100%,0 100%);box-shadow:inset 0 25px 35px #b5fbe345;animation:nature-water 9s ease-in-out infinite alternate}
+.nature-tree{position:absolute;bottom:9%;width:24%;height:42%;background:linear-gradient(90deg,#07462f,#052e29);clip-path:polygon(50% 0,60% 18%,53% 18%,69% 38%,59% 38%,80% 66%,57% 66%,57% 100%,44% 100%,44% 66%,20% 66%,40% 38%,32% 38%,47% 18%,40% 18%)}
+.nature-tree-left{left:-7%;transform:scale(1.4)}.nature-tree-right{right:-7%;transform:scale(1.2)}
+.nature-birds{position:absolute;top:11%;right:9%;width:clamp(145px,22vw,330px);opacity:.85;animation:nature-birds-float 7s ease-in-out infinite}
+.nature-guardian{position:absolute;bottom:11%;left:2%;height:clamp(155px,28vw,380px);filter:drop-shadow(0 25px 24px #063b39a0);opacity:.9;animation:nature-birds-float 8s ease-in-out infinite}
+.nature-jaguar{position:absolute;bottom:5%;right:2%;width:clamp(170px,28vw,350px);filter:drop-shadow(0 18px 24px #002b24a9);animation:nature-birds-float 9s ease-in-out infinite reverse}
+.nature-shade{position:absolute;inset:0;background:linear-gradient(90deg,#022b2acb 0%,#003b3480 37%,transparent 72%),linear-gradient(180deg,#043e3100 40%,#05251a44 75%,#041d1d 100%)}
+.hero-copy{position:relative;z-index:4;background:linear-gradient(135deg,#052e29d9,#063729aa 70%,#084c493d);border:1px solid #d6f4bc36;border-radius:30px;padding:clamp(26px,3.6vw,45px);box-shadow:0 25px 85px #002f2868;backdrop-filter:blur(13px);max-width:630px}
+.eyebrow{background:#dafcad12;border-color:#fef09871;color:#f5ffe1;font-size:11px;letter-spacing:.07em}.bc-flag{font-size:16px}.pulse{background:#ffdd36;box-shadow:0 0 0 5px #f9db3525;animation:nature-pulse 2s infinite}
+.hero h1{white-space:normal;font-size:clamp(44px,4.6vw,77px);line-height:1.07;margin:21px 0 18px;text-shadow:0 5px 35px #001d1f70}
+.gradient-text{background:linear-gradient(110deg,#fff196 7%,#e9ff79 38%,#6affbd 79%,#9befff);background-clip:text;-webkit-background-clip:text}
+.hero-lead{color:#e1f6ed;font-size:15px;line-height:1.85}
+.hero-footnotes{color:#d5eee3;font-size:11px;gap:9px 15px}.dot-check{background:#f9e55133;color:#ffe86c}
+.hero-actions{margin-top:25px}
+.button-primary{background:linear-gradient(125deg,#fff16a,#f6ca26);color:#053e2b;border:1px solid #fff7b3;box-shadow:0 8px 30px #ffd52e42}.button-primary:hover{background:linear-gradient(125deg,#fff9b7,#ffdc50);box-shadow:0 12px 45px #ffd52e65}
+.button-outline{background:#052f2b9c;border:1px solid #c0ebd47c;color:#effff6}.button-outline:hover{background:#12634b;color:#fff}
+.preview-wrap{z-index:3;transform:perspective(1400px) rotateY(-7deg) rotateX(3deg);filter:drop-shadow(0 20px 28px #012f2799)}
+.preview-glow{position:absolute;inset:-20%;background:radial-gradient(ellipse,#ffe36367,transparent 60%);filter:blur(50px);z-index:-1}
+.app-preview{border:2px solid #f5ffd25e;background:#092f2a;box-shadow:0 35px 85px #001e24ba,0 0 0 7px #d8ff9820}
+.float-pill{border:1px solid #f9e78c7d;background:#154f42eb;color:#fff}.float-brazil{background:#ffd94b;color:#14442d;border-color:#fff6a3}.preview-disclaimer{color:#d6efe3}
+.feature-strip{background:#093c31;border-color:#80e5ac3c}.feature-strip-content{padding-block:27px}.feature-strip-content>span{color:#ebfff0;font-weight:800}.feature-strip-content>span>span{color:#ffdd41}
+.section{position:relative}.section-heading h2 span,.community-copy h2 span,.about-copy h2 span,.download-panel h2 span{color:#ffdf55}.section-kicker{color:#78ffaf}.section-heading p,.community-copy>p,.about-copy>p,.download-panel>p{color:#c2d9d1}
+.feature-card{background:linear-gradient(145deg,#174338,#0b2b2b 80%);border-color:#62cc9644;border-radius:23px;box-shadow:inset 0 1px #ffffff12;transition:transform .28s,box-shadow .28s,border-color .28s}
+.feature-card:hover{transform:translateY(-8px);border-color:#ffdf67a8;box-shadow:0 22px 55px #011d1b9c}
+.feature-primary{background:linear-gradient(145deg,#147b54,#134c43 72%,#0a343a)}.feature-highlight{background:linear-gradient(135deg,#1c6262,#16375a 72%)}
+.feature-icon{background:linear-gradient(135deg,#2cbb8855,#ffeb4d25);border:1px solid #bfffa852;border-radius:17px;width:56px;height:56px}
+.feature-card p{color:#c5dcd4}.feature-chip{background:#fff16b;color:#24522d;font-weight:900}
+.community-section{background:linear-gradient(120deg,#093f36,#0b5d48 43%,#113b4b);border-color:#88dd9c48}
+.community-art{background:linear-gradient(#08725c,#137f56 48%,#0d5041 65%,#064438);border-color:#f9ee8a77;box-shadow:0 25px 65px #012e2a88}
+.community-art-sun{position:absolute;width:210px;height:210px;border-radius:50%;top:10px;left:50%;transform:translateX(-50%);background:radial-gradient(circle,#fff69c,#ffdf37 70%);box-shadow:0 0 65px #f9e55277}
+.community-art-landscape{position:absolute;inset:32% -10% 0;background:linear-gradient(150deg,#0c965f,#074734);clip-path:polygon(0 55%,18% 28%,34% 50%,53% 8%,70% 45%,88% 18%,100% 48%,100% 100%,0 100%)}
+.community-art-flag{position:relative;z-index:1;filter:drop-shadow(0 16px 22px #034234c0);transform:rotate(-8deg)}
+.community-art-card{background:#093c31e6;border-color:#f5e66d;backdrop-filter:blur(12px)}
+.about-facts>div{background:linear-gradient(110deg,#143c32,#0e2c30);border-color:#76e8a63b;border-radius:18px}.about-facts>div>span{color:#ffdc50}
+.download-panel{background:radial-gradient(circle at 50% 0%,#ffdd4d30,transparent 46%),linear-gradient(130deg,#0e6c4b,#0b3f40 65%,#102f46);border:1px solid #ffe77d7a;box-shadow:0 25px 95px #011d1dc2}
+.download-icon{background:#ffde43;border-color:#fff6ac;box-shadow:0 0 45px #ffe96345}.download-icon span{color:#0d5f41}
+.release-indicator{background:#ffeb60;box-shadow:0 0 0 4px #ffdf3345}
+.faq-list details{background:linear-gradient(120deg,#10352e,#0c292b);border-color:#78dfa336;border-radius:15px}.faq-list details[open]{border-color:#f2e4678c}.faq-list details[open] summary{color:#fff3a3}.faq-list summary>span{color:#ffdf48}
+.site-footer{background:#04251f;border-color:#7cdf9c37}.site-header,.hero,.feature-strip,.section,.site-footer{scroll-margin-top:80px}
+@keyframes nature-sun-pulse{50%{filter:brightness(1.13);box-shadow:0 0 0 27px #ffff7719,0 0 130px #f9e956a1,0 0 250px #feec6477}}
+@keyframes nature-arrive{from{opacity:0;transform:translateY(90px)}to{opacity:1;transform:translateY(0)}}
+@keyframes nature-water{to{transform:translateX(1.8%) scaleY(1.06)}}
+@keyframes nature-birds-float{50%{transform:translateY(-10px)}}
+@keyframes nature-pulse{50%{box-shadow:0 0 0 9px #ffe96311}}
+@media(max-width:1060px){.hero{min-height:740px;gap:25px}.hero h1{font-size:clamp(39px,4.9vw,60px)}.hero-copy{padding:28px}}
+@media(max-width:830px){.hero{grid-template-columns:1fr;padding:95px 25px 115px;gap:45px}.hero-copy{max-width:690px;width:min(100%,690px);margin:auto}.preview-wrap{width:min(100%,590px);margin:auto}.nature-guardian{left:-5%;bottom:5%}.nature-jaguar{right:-5%;bottom:2%;opacity:.7}.nature-shade{background:linear-gradient(180deg,#053a3099 0%,#034d4060 46%,#042d2c77 100%)}}
+@media(max-width:620px){.container{width:min(100% - 32px,1230px)}.hero{padding:88px 16px 110px;gap:38px}.hero-copy{padding:24px 20px;border-radius:22px}.hero h1{font-size:clamp(35px,9vw,54px)}.hero-lead{font-size:13px}.nature-sun{top:6%;left:70%;width:230px}.nature-birds{right:-6%;top:13%;width:180px}.nature-guardian,.nature-jaguar{opacity:.5}.nature-tree{height:30%;bottom:8%}.nature-river{height:19%}.preview-wrap{transform:none}.community-art-sun{width:165px;height:165px}.feature-grid{gap:13px}.section{padding-top:82px;padding-bottom:82px}.site-header{background:#062c26ef}}
+@media(max-width:410px){.hero{padding-left:12px;padding-right:12px}.hero-copy{padding:23px 17px}.hero h1{font-size:36px}.hero-footnotes{gap:8px}.eyebrow{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.nature-landscape *, .pulse{animation:none!important}.preview-wrap{transform:none}}
