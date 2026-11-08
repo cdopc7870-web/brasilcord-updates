@@ -34,6 +34,16 @@ jobs:
           test -s docs/styles.css
           test -s docs/site.js
           test -s docs/favicon.svg
+          test -s docs/mobile/index.html
+          test -s docs/mobile/styles.css
+          test -s docs/mobile/app.js
+          test -s docs/mobile/sw.js
+          test -s docs/mobile/manifest.webmanifest
+          test -s docs/mobile/icon-192.png
+          test -s docs/mobile/icon-512.png
+          node --check docs/mobile/app.js
+          node --check docs/mobile/sw.js
+          node -e "const fs=require('fs');const m=JSON.parse(fs.readFileSync('docs/mobile/manifest.webmanifest','utf8'));if(m.display!=='standalone'||!m.start_url)process.exit(1)"
           node --check docs/site.js
           ! grep -Eq 'password|DATABASE_URL|RESEND_API_KEY|EMAIL_OTP_SECRET|BRASILCORD_OWNER_USER_ID' docs/index.html
 
