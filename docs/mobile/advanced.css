@@ -67,3 +67,6 @@
  .mobile-overflow.open{display:grid}
  .mobile-overflow .mobile-header-action{display:block;width:100%;padding:12px;font-size:13px;text-align:left;white-space:normal}
 }
+
+#content .message-mentioned{background:#514c244a;border-left:3px solid #ffe474;border-radius:8px;padding:8px 6px}
+#content .message-mentioned .message-head strong{color:#ffe786}
