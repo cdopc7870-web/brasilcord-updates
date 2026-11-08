@@ -84,6 +84,7 @@
     state.token=data.token;state.user=data.user;state.verificationId=null;
     $('auth-dialog').close();$('auth-password').value='';$('otp-code').value='';
     setAuthenticated(true);
+    document.dispatchEvent(new CustomEvent('bc:mobile-session',{detail:{token:state.token,user:state.user}}));
     await Promise.all([loadCommunities(),loadFriends(),loadRequests()]);
     void chooseTab('communities');
     clearInterval(state.poll);
@@ -122,6 +123,7 @@
     const data=await api('/communities/'+encodeURIComponent(id));
     if(seq!==state.requestSeq)return;
     state.community={...data.community,id};state.channel=null;state.peer=null;
+    document.dispatchEvent(new CustomEvent('bc:mobile-community',{detail:{community:state.community,channels:data.channels||[]}}));
     closeSidebar();
     $('sidebar-footer').hidden=true;$('sidebar-list').replaceChildren();
     const back=sidebarEntry('← Comunidades','Voltar à lista',()=>chooseTab('communities'),{marker:'←'});
@@ -132,8 +134,8 @@
     for(const channel of texts)sidebarEntry('# '+channel.name,'Canal de texto',()=>selectChannel(channel),{marker:'#'});
     if(voices.length){
       $('sidebar-list').append(node('div','CANAIS DE VOZ','group-title'));
-      for(const c of voices)sidebarEntry('◉ '+c.name,'Calls em breve no navegador',()=>{
-        notice('Chamadas de voz ainda serão adaptadas ao BrasilCord Mobile. Acesse pelo aplicativo de PC por enquanto.');
+      for(const c of voices)sidebarEntry('◉ '+c.name,'Entrar na chamada de voz',()=>{
+        document.dispatchEvent(new CustomEvent('bc:mobile-voice-request',{detail:{channel:c,community:state.community}}));closeSidebar();
       },{marker:'◉'});
     }
     if(!texts.length){clearContent().append(empty('Esta comunidade não possui canais de texto disponíveis.'));setTitle(state.community.name);}
@@ -141,6 +143,7 @@
   }
   async function selectChannel(channel,quiet=false){
     state.channel=channel;state.peer=null;state.tab='communities';
+    document.dispatchEvent(new CustomEvent('bc:mobile-context',{detail:{channel,community:state.community,peer:null}}));
     setTitle('# '+channel.name,state.community?.name||'COMUNIDADE');
     if(!quiet){closeSidebar();notice('');}
     await showMessages();
@@ -196,6 +199,7 @@
   }
   async function openDM(friend){
     state.peer=friend;state.channel=null;state.tab='dms';closeSidebar();
+    document.dispatchEvent(new CustomEvent('bc:mobile-context',{detail:{peer:friend,community:null,channel:null}}));
     setTitle(labelOf(friend),'MENSAGEM PRIVADA');await showMessages();
   }
   function getAcceptedPeers(){
@@ -363,6 +367,7 @@
     const old=state.token;
     clearInterval(state.poll);
     state.token=null;state.user=null;state.community=null;state.channel=null;state.peer=null;
+    document.dispatchEvent(new Event('bc:mobile-logout'));
     state.communities=[];state.friends=[];state.requests=[];++state.requestSeq;
     setAuthenticated(false);
     $('sidebar-list').replaceChildren();$('content').hidden=true;$('composer').hidden=true;$('welcome').hidden=false;
