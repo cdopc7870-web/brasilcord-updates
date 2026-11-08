@@ -5,7 +5,7 @@
   const API='https://brasilcord-sinalizacao-dkx157.onrender.com/api/platform';
   const $=id=>document.getElementById(id);
   const state={token:null,user:null,tab:'communities',communities:[],community:null,channel:null,peer:null,
-    friends:[],requests:[],verificationId:null,register:false,requestSeq:0,poll:null,installEvent:null};
+    friends:[],requests:[],approvedContacts:[],verificationId:null,register:false,requestSeq:0,poll:null,installEvent:null};
   const node=(tag,text,cls)=>{const e=document.createElement(tag);if(text!==undefined&&text!==null)e.textContent=String(text);if(cls)e.className=cls;return e;};
   function notice(text,error=false){
     const e=$('notice');e.textContent=text;e.dataset.error=String(error);e.hidden=!text;
@@ -102,7 +102,7 @@
   }
   async function loadRequests(){
     const data=await api('/dm-requests');
-    state.requests=data.incoming||[];
+    state.requests=data.incoming||[];state.approvedContacts=(data.accepted||[]).map(x=>({id:x.peerId,username:x.username,displayName:x.displayName,avatarUrl:x.avatarUrl,viaRequest:true}));
     const n=state.requests.length;
     $('request-badge').textContent=n>99?'99+':String(n);$('request-badge').hidden=!n;
     return state.requests;
@@ -155,6 +155,7 @@
       for(const item of items){
         const author=privateChat?(item.sender_id===state.user.id?state.user:state.peer):item.author;
         const row=node('article',null,'message'+(author?.id===state.user.id?' message-self':''));
+        row.dataset.messageId=item.id;row.dataset.messageKind=privateChat?'dm':'channel';
         row.append(avatar(author));
         const body=node('div',null,'message-body'),head=node('div',null,'message-head');
         head.append(node('strong',labelOf(author)),node('time',when(item.createdAt||item.created_at)));
@@ -174,6 +175,7 @@
         }
         if(privateChat&&(item.has_photo||item.audio_duration_seconds))body.append(node('p','📎 Mídia privada disponível no BrasilCord para PC nesta versão beta.','channels-note'));
         row.append(body);list.append(row);
+        document.dispatchEvent(new CustomEvent('bc:mobile-message-rendered',{detail:{element:row,message:item,privateChat,author,peer:state.peer,channel:state.channel,community:state.community}}));
       }
       box.append(list);
       box.scrollTop=box.scrollHeight;
@@ -205,6 +207,7 @@
   function getAcceptedPeers(){
     const set=new Map();
     for(const friend of state.friends)if(friend.status==='accepted')set.set(friend.id,friend);
+    for(const person of state.approvedContacts)if(!set.has(person.id))set.set(person.id,person);
     return [...set.values()];
   }
   function sideForDMs(){
@@ -368,7 +371,7 @@
     clearInterval(state.poll);
     state.token=null;state.user=null;state.community=null;state.channel=null;state.peer=null;
     document.dispatchEvent(new Event('bc:mobile-logout'));
-    state.communities=[];state.friends=[];state.requests=[];++state.requestSeq;
+    state.communities=[];state.friends=[];state.requests=[];state.approvedContacts=[];++state.requestSeq;
     setAuthenticated(false);
     $('sidebar-list').replaceChildren();$('content').hidden=true;$('composer').hidden=true;$('welcome').hidden=false;
     setTitle('Sua comunidade. Em qualquer lugar.');
