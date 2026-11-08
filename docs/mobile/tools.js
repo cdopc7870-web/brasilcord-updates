@@ -139,6 +139,19 @@
    for(const item of d.incoming||[]){
      const row=create('article',null,'advanced-card');
      row.append(create('strong',item.displayName||item.username),create('p',item.kind==='call'?'☎ Pedido de ligação':item.kind==='photo'?'🖼️ Foto enviada':item.intro||'Nova mensagem'));
+     if(item.kind==='photo'&&item.hasPhoto){
+       const preview=create('img');preview.alt='Prévia da foto pendente';preview.className='mobile-message-media';
+       row.append(preview);
+       void (async()=>{
+         try{
+           const res=await fetch(API+'/dm-requests/'+item.id+'/photo',{cache:'no-store',credentials:'omit',headers:{Authorization:'Bearer '+token}});
+           if(!res.ok)throw Error('Foto não disponível.');
+           const blob=await res.blob();if(!formatMime(blob.type)||blob.size>1_000_000)throw Error('Formato de imagem inválido.');
+           if(!preview.isConnected)return;
+           const url=URL.createObjectURL(blob);blobUrls.add(url);preview.src=url;
+         }catch{preview.replaceWith(create('p','Prévia indisponível.'));}
+       })();
+     }
      const controls=create('div',null,'advanced-inline');
      controls.append(btn('Aceitar',async()=>{
        await request('/dm-requests/'+item.id+'/accept','POST');
@@ -240,6 +253,18 @@
        const result=await request('/dm-requests','POST',{recipientId:id,kind:'call',message:''});
        if(result.alreadyAccepted)await startPrivateCall(id,true);
        else toast('Pedido de ligação enviado. O contato pode aceitar ou recusar.');
+     }));
+     row.append(btn('🖼️ Foto',()=>{
+       const input=create('input');input.type='file';input.accept='image/png,image/jpeg,image/webp,image/gif';
+       input.addEventListener('change',async()=>{
+         try{
+           const file=input.files?.[0];if(!file)return;
+           const image=await file64(file);
+           const result=await request('/dm-requests','POST',{recipientId:id,kind:'photo',mime:file.type,image});
+           if(result.alreadyAccepted)await request('/dms/'+id+'/photos','POST',{mime:file.type,image});
+           toast(result.alreadyAccepted?'Foto enviada na conversa.':'Foto enviada à caixa de pedidos do contato.');
+         }catch(e){status(e.message);}
+       },{once:true});input.click();
      }));
      row.append(btn('➕ Amigo',async()=>{await request('/friends/request','POST',{username:p.username});toast('Pedido enviado.');}));
      row.append(btn(p.blockedByMe?'Desbloquear':'Bloquear',async()=>{
