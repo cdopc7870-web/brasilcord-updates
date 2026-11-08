@@ -406,6 +406,20 @@
   $('sidebar-close').addEventListener('click',closeSidebar);
   for(const btn of document.querySelectorAll('[data-tab]'))btn.addEventListener('click',()=>{closeSidebar();void chooseTab(btn.dataset.tab);});
   document.addEventListener('visibilitychange',()=>{if(!document.hidden){void health();if(state.token)void refreshActive();}});
+  document.addEventListener('bc:mobile-open-search-result',event=>void (async()=>{
+    const target=event.detail;
+    try{
+      if(!state.token||!target)return;
+      if(target.kind==='channel'){
+        await selectCommunity(target.communityId);
+        const found=(await api('/communities/'+target.communityId)).channels?.find(c=>c.id===target.channelId);
+        if(found)await selectChannel(found);
+      }else if(target.kind==='dm'){
+        const p=(await api('/users/'+target.peerId)).profile;
+        await openDM(p);
+      }
+    }catch(err){notice(err.message,true);}
+  })());
   document.addEventListener('bc:mobile-refresh',()=>{if(state.token)void refreshActive();});
   document.addEventListener('bc:mobile-messages-reopen',()=>{if(state.token&&state.channel||state.token&&state.peer)void showMessages();});
   setupInstall();setAuthenticated(false);void health();
