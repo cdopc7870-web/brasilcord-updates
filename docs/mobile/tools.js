@@ -42,6 +42,17 @@
  top.insertBefore(inbox,$('user-name'));
  top.insertBefore(search,$('user-name'));
  top.insertBefore(polls,$('user-name'));
+ const menuToggle=btn('☰ Mais',()=>{mobileMenu.classList.toggle('open');menuToggle.setAttribute('aria-expanded',String(mobileMenu.classList.contains('open')));},'mobile-menu-toggle');
+ menuToggle.setAttribute('aria-expanded','false');menuToggle.setAttribute('aria-controls','mobile-overflow');
+ const mobileMenu=create('div',null,'mobile-overflow');mobileMenu.id='mobile-overflow';
+ for(const entry of [tools,server,discover,inbox,search,polls])mobileMenu.append(entry);
+ top.insertBefore(menuToggle,$('user-name'));top.insertBefore(mobileMenu,$('user-name'));
+ document.addEventListener('pointerdown',event=>{
+   if(!mobileMenu.contains(event.target)&&event.target!==menuToggle){
+     mobileMenu.classList.remove('open');menuToggle.setAttribute('aria-expanded','false');
+   }
+ });
+
  function updateButtons(){for(const b of [tools,server,discover,inbox,search,polls])b.hidden=!token;server.hidden=!token||!community;search.hidden=!token||(!channel&&!peer);polls.hidden=!token||!channel;}
  updateButtons();
  function field(label,value='',limit=120,kind='input'){
@@ -504,7 +515,7 @@
      if(Notification.permission==='default'){
        const value=await Notification.requestPermission();toast(value==='granted'?'Avisos autorizados.':'Permissão não concedida.');
      }else toast(Notification.permission==='granted'?'Notificações já autorizadas.':'Notificações bloqueadas no navegador.');
-   },'mobile-header-action');top.insertBefore(enable,$('user-name'));
+   },'mobile-header-action');mobileMenu.append(enable);
  }
  window.addEventListener('pagehide',()=>{destroyBlobs();if(socket)socket.close();},{once:true});
 })();
