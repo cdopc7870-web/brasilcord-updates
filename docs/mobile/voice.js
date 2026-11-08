@@ -5,6 +5,35 @@
   let token=null,user=null,room=null,ws=null,local=null,camera=null,screen=null,muted=false,deaf=false,serverMuted=false,serverDeaf=false;
   let generation=0,keepAlive=null,iceServers=[{urls:'stun:stun.l.google.com:19302'}];
   const peers=new Map(),participants=new Map(),candidateQueues=new Map(),volumes=new Map(),localMute=new Set(),peerTasks=new Map();
+  let meterContext=null,meterTimer=null;
+  const meters=new Map();
+  function meterFor(id,stream){
+    if(!stream?.getAudioTracks().length||!window.AudioContext)return;
+    try{
+      meterContext||=new AudioContext();
+      const src=meterContext.createMediaStreamSource(stream),analyser=meterContext.createAnalyser();
+      analyser.fftSize=512;src.connect(analyser);
+      const old=meters.get(id);old?.source.disconnect();
+      meters.set(id,{source:src,analyser,data:new Uint8Array(512)});
+      if(!meterTimer)meterTimer=setInterval(updateMeters,160);
+    }catch{}
+  }
+  function updateMeters(){
+    for(const [id,m] of meters){
+      m.analyser.getByteTimeDomainData(m.data);
+      let sum=0;for(const sample of m.data){const value=(sample-128)/128;sum+=value*value;}
+      const speaking=Math.sqrt(sum/m.data.length)>.027&&(id==='self'?!muted&&!serverMuted:!participants.get(id)?.muted);
+      const card=$('mobile-call-people').querySelector('[data-user-id="'+id+'"]');
+      card?.classList.toggle('speaking',speaking);
+    }
+  }
+  function removeMeter(id){const old=meters.get(id);if(old){old.source.disconnect();meters.delete(id);}}
+  function clearMeters(){
+    for(const id of [...meters.keys()])removeMeter(id);
+    clearInterval(meterTimer);meterTimer=null;
+    if(meterContext){void meterContext.close().catch(()=>{});meterContext=null;}
+  }
+
   const overlay=document.createElement('dialog');overlay.className='mobile-call';
   overlay.innerHTML='<div class="mobile-call-inner"><header><div><small>BRASILCORD • CHAMADA</small><h2 id="mobile-call-title">Canal de voz</h2></div><button id="mobile-call-close" type="button" aria-label="Desconectar">✕</button></header><p id="mobile-call-status" role="status">Preparando chamada…</p><div id="mobile-call-people" class="mobile-call-people"></div><div id="mobile-call-videos" class="mobile-call-videos"></div><div id="mobile-call-audio" hidden></div><div class="mobile-call-controls"><button id="mobile-call-mute" type="button">🎙 Microfone</button><button id="mobile-call-deafen" type="button">🔊 Ouvir</button><button id="mobile-call-camera" type="button">📷 Câmera</button><button id="mobile-call-screen" type="button">▣ Tela</button><button id="mobile-call-hangup" class="danger" type="button">☎ Desligar</button></div></div>';
   document.body.append(overlay);
@@ -30,7 +59,7 @@
   }
   function clearPeer(id){
     const p=peers.get(id);if(p){p.pc.close();peers.delete(id);}
-    candidateQueues.delete(id);peerTasks.delete(id);
+    candidateQueues.delete(id);peerTasks.delete(id);removeMeter(id);
     for(const element of overlay.querySelectorAll('[data-peer="'+id+'"]')){
       if(element.tagName==='AUDIO'||element.tagName==='VIDEO')element.srcObject=null;
       element.remove();
@@ -40,7 +69,7 @@
     generation++;clearInterval(keepAlive);keepAlive=null;
     if(ws){const old=ws;ws=null;old.onclose=null;old.onerror=null;if(old.readyState===WebSocket.OPEN)old.send(JSON.stringify({type:'leave'}));old.close();}
     for(const id of [...peers.keys()])clearPeer(id);
-    peers.clear();participants.clear();candidateQueues.clear();peerTasks.clear();
+    peers.clear();participants.clear();candidateQueues.clear();peerTasks.clear();clearMeters();
     stopVideo('camera');stopVideo('screen');trackStop(local);local=null;
     room=null;muted=false;deaf=false;serverMuted=false;serverDeaf=false;
     $('mobile-call-audio').replaceChildren();$('mobile-call-videos').replaceChildren();
@@ -66,7 +95,7 @@
     const area=$('mobile-call-people');area.replaceChildren();
     const everyone=[{...user,id:user?.id,name:label(user)+' (você)',self:true,muted:muted||serverMuted},...participants.values()];
     for(const p of everyone){
-      const card=document.createElement('article');card.className='mobile-call-person';
+      const card=document.createElement('article');card.className='mobile-call-person';card.dataset.userId=p.self?'self':p.id;
       const ava=document.createElement('span');ava.className='mobile-call-avatar';ava.textContent=label(p).slice(0,2).toUpperCase();
       const url=p.avatarUrl;if(typeof url==='string'&&url.startsWith(API+'/')){
         const img=document.createElement('img');img.src=url;img.alt='';ava.replaceChildren(img);
@@ -107,7 +136,7 @@
       if(event.track.kind==='audio'){
         let a=$('mobile-call-audio').querySelector('audio[data-peer="'+id+'"]');
         if(!a){a=document.createElement('audio');a.dataset.peer=id;a.autoplay=true;a.playsInline=true;$('mobile-call-audio').append(a);}
-        a.srcObject=stream;applyVolume(id);void a.play().catch(()=>status('Toque na tela para permitir reprodução de áudio.'));
+        a.srcObject=stream;meterFor(id,stream);applyVolume(id);void a.play().catch(()=>status('Toque na tela para permitir reprodução de áudio.'));
       }else{
         const index=pc.getTransceivers().indexOf(event.transceiver);
         const kind=index===1?'camera':index===2?'screen':null;
@@ -154,7 +183,7 @@
       if(!navigator.mediaDevices?.getUserMedia||!window.RTCPeerConnection)throw Error('Este navegador não suporta chamadas WebRTC.');
       const stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true},video:false});
       if(seq!==generation){trackStop(stream);return;}
-      local=stream;
+      local=stream;meterFor('self',stream);
       stream.getAudioTracks().forEach(track=>track.addEventListener('ended',()=>{if(seq===generation)leave('Microfone desconectado.');},{once:true}));
       try{
         const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),7000);
