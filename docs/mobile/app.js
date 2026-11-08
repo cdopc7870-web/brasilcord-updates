@@ -310,6 +310,12 @@
     };
   }
   function setupInstall(){
+    // iOS/Safari não emite beforeinstallprompt: mantenha a ajuda visível.
+    const standalone=window.matchMedia?.('(display-mode: standalone)').matches||navigator.standalone===true;
+    if(!standalone){
+      $('welcome-install').hidden=false;
+      if(window.matchMedia?.('(max-width: 690px)').matches)$('install').hidden=false;
+    }
     window.addEventListener('beforeinstallprompt',event=>{
       event.preventDefault();state.installEvent=event;
       $('install').hidden=false;$('welcome-install').hidden=false;
