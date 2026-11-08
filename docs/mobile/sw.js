@@ -1,7 +1,7 @@
 'use strict';
 // Cache apenas do shell público da PWA. Nunca armazenar API, autenticação, mídia ou dados pessoais.
-const VERSION='brasilcord-mobile-shell-v1';
-const SHELL=['./','./index.html','./styles.css','./app.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png'];
+const VERSION='brasilcord-mobile-shell-v2';
+const SHELL=['./','./index.html','./styles.css','./advanced.css','./app.js','./voice.js','./tools.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(VERSION).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting()));
 });
