@@ -127,7 +127,12 @@
      const row=create('article',null,'advanced-card');
      row.append(create('strong',item.displayName||item.username),create('p',item.kind==='call'?'☎ Pedido de ligação':item.kind==='photo'?'🖼️ Foto enviada':item.intro||'Nova mensagem'));
      const controls=create('div',null,'advanced-inline');
-     controls.append(btn('Aceitar',async()=>{await request('/dm-requests/'+item.id+'/accept','POST');toast('Conversa aceita.');await openInbox();},'primary'),
+     controls.append(btn('Aceitar',async()=>{
+       await request('/dm-requests/'+item.id+'/accept','POST');
+       toast('Conversa aceita.');
+       if(item.kind==='call')await startPrivateCall(item.peerId,true);
+       await openInbox();
+     },'primary'),
        btn('Recusar',async()=>{await request('/dm-requests/'+item.id+'/close','POST');await openInbox();},'danger'));
      row.append(controls);box.append(row);
    }
@@ -160,6 +165,15 @@
    box.append(searchButton);
    query.input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();searchButton.click();}});
  }
+ async function startPrivateCall(id,sendInvite=true){
+   if(!token||!id)throw Error('Entre em sua conta para ligar.');
+   const result=await request('/dms/'+id+'/call');
+   if(sendInvite){
+     if(socket?.readyState!==WebSocket.OPEN)throw Error('Sinalização de chamadas desconectada.');
+     socket.send(JSON.stringify({type:'dm-call-invite',to:id}));
+   }
+   document.dispatchEvent(new CustomEvent('bc:mobile-voice-request',{detail:{channel:result.room}}));
+ }
  async function showProfile(id){
    const box=open('Perfil de membro'),d=await request('/users/'+id),p=d.profile;
    const title=create('h3',p.displayName||p.username);box.append(title,create('p','@'+p.username),create('p',p.bio||'Sem biografia.'));
@@ -170,6 +184,11 @@
        const result=await request('/dm-requests','POST',{recipientId:id,kind:'message',message:message.trim().slice(0,500)});
        if(result.alreadyAccepted)await request('/dms/'+id,'POST',{content:message.trim()});
        toast(result.alreadyAccepted?'Mensagem enviada.':'Mensagem enviada para a caixa de pedidos.');hide();
+     }));
+     row.append(btn('☎ Ligar',async()=>{
+       const result=await request('/dm-requests','POST',{recipientId:id,kind:'call',message:''});
+       if(result.alreadyAccepted)await startPrivateCall(id,true);
+       else toast('Pedido de ligação enviado. O contato pode aceitar ou recusar.');
      }));
      row.append(btn('➕ Amigo',async()=>{await request('/friends/request','POST',{username:p.username});toast('Pedido enviado.');}));
      row.append(btn(p.blockedByMe?'Desbloquear':'Bloquear',async()=>{
@@ -421,9 +440,12 @@
      if(data.type==='dm-call-invite'){
        if(confirm((data.displayName||'Contato')+' está ligando. Atender pelo BrasilCord Web?')){
          instance.send(JSON.stringify({type:'dm-call-accept',to:data.from}));
-         toast('A chamada foi aceita. Abra a conversa para participar.');
+         void startPrivateCall(data.from,false).catch(e=>toast(e.message,true));
        }else instance.send(JSON.stringify({type:'dm-call-reject',to:data.from}));
      }
+     if(data.type==='dm-call-accept')toast('A ligação foi atendida.');
+     if(data.type==='dm-call-reject')toast('Ligação recusada.');
+     if(data.type==='dm-call-delivery-status'&&!data.delivered)toast('Pessoa offline: a ligação não tocou.',true);
    };
    instance.onclose=()=>{if(socket===instance&&token){socket=null;setTimeout(()=>{if(token&&document.visibilityState==='visible')connectWS();},5000);}};
  }
