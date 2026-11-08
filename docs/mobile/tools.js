@@ -420,13 +420,13 @@
  }
  document.addEventListener('bc:mobile-session',e=>{token=e.detail.token;user=e.detail.user;connectWS();updateButtons();refreshComposer();});
  document.addEventListener('bc:mobile-community',e=>{community=e.detail.community;server.hidden=false;});
- document.addEventListener('bc:mobile-context',e=>{peer=e.detail.peer;channel=e.detail.channel;community=e.detail.community||community;updateButtons();refreshComposer();});
+ document.addEventListener('bc:mobile-context',e=>{peer=e.detail.peer||null;channel=e.detail.channel||null;community=e.detail.community||null;updateButtons();refreshComposer();});
  document.addEventListener('bc:mobile-logout',()=>{
    token=null;user=null;community=null;channel=null;peer=null;replyTo=null;replyBar.hidden=true;
    recording?.recorder?.stop();recording=null;if(socket){socket.onclose=null;socket.close();socket=null;}hide();updateButtons();refreshComposer();
  });
  document.addEventListener('bc:mobile-notice',e=>{const el=$('notice');el.hidden=false;el.textContent=e.detail.message;el.dataset.error=String(e.detail.bad||false);});
- document.addEventListener('bc:mobile-refresh',()=>{const tab=document.querySelector('.bottomnav button.current');if(tab)tab.click();});
+ // A aplicação principal atualiza o canal ou DM atual sem alterar a seleção.
  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&token&&!socket)connectWS();});
  if('Notification' in window){
    const enable=btn('🔔 Notificações',async()=>{
