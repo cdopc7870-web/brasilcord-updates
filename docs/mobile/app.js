@@ -271,6 +271,10 @@
   }
   async function chooseTab(tab){
     state.tab=tab;
+    if(tab!=='communities'&&tab!=='dms'){
+      state.channel=null;state.peer=null;
+      document.dispatchEvent(new CustomEvent('bc:mobile-context',{detail:{channel:null,peer:null,community:null}}));
+    }
     for(const b of document.querySelectorAll('[data-tab]'))b.classList.toggle('current',b.dataset.tab===tab);
     if(!state.token){$('welcome').hidden=false;$('content').hidden=true;$('composer').hidden=true;return;}
     if(tab==='communities'){
@@ -402,5 +406,7 @@
   $('sidebar-close').addEventListener('click',closeSidebar);
   for(const btn of document.querySelectorAll('[data-tab]'))btn.addEventListener('click',()=>{closeSidebar();void chooseTab(btn.dataset.tab);});
   document.addEventListener('visibilitychange',()=>{if(!document.hidden){void health();if(state.token)void refreshActive();}});
+  document.addEventListener('bc:mobile-refresh',()=>{if(state.token)void refreshActive();});
+  document.addEventListener('bc:mobile-messages-reopen',()=>{if(state.token&&state.channel||state.token&&state.peer)void showMessages();});
   setupInstall();setAuthenticated(false);void health();
 })();
