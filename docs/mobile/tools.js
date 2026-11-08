@@ -133,23 +133,32 @@
    }
  }
  async function openSearch(){
-   const box=open('Buscar nesta conversa');
-   box.append(create('p','Pesquisa local nas mensagens carregadas. A busca global será disponibilizada quando houver indexação no servidor.'));
-   const query=field('Texto a encontrar','',100);box.append(query.wrap);
+   const box=open('Buscar mensagens');
+   box.append(create('p','Pesquisa no histórico acessível de canais e conversas privadas. Mensagens de canais restritos ou pessoas bloqueadas não aparecem.'));
+   const query=field('Palavra ou trecho','',80);query.input.minLength=2;box.append(query.wrap);
    const matches=create('div');box.append(matches);
-   const run=()=>{
-     matches.replaceChildren();
-     const q=query.input.value.toLocaleLowerCase('pt-BR').trim();
-     if(q.length<2)return;
-     const rows=[...document.querySelectorAll('#content .message')];
-     for(const row of rows.filter(row=>row.textContent.toLocaleLowerCase('pt-BR').includes(q)).slice(0,30)){
-       matches.append(btn(row.textContent.slice(0,110),()=>{
-         hide();row.scrollIntoView({behavior:'smooth',block:'center'});
-       }));
-     }
-     if(!matches.children.length)matches.append(create('p','Nenhum resultado entre as mensagens carregadas.'));
-   };
-   query.input.addEventListener('input',run);
+   const searchButton=btn('⌕ Pesquisar',async()=>{
+     const q=query.input.value.trim();
+     if(q.length<2||q.length>80){status('Digite entre 2 e 80 caracteres.');return;}
+     searchButton.disabled=true;status('Pesquisando…');matches.replaceChildren();
+     try{
+       const data=await request('/search?q='+encodeURIComponent(q));
+       status(data.results.length+' resultado(s) encontrado(s).');
+       for(const result of data.results){
+         const row=create('article',null,'advanced-card');
+         row.append(create('strong',result.kind==='dm'?'✉ '+result.peerName:'# '+result.channelName));
+         row.append(create('p',result.content.slice(0,260)));
+         row.append(btn('Abrir conversa',()=>{
+           hide();document.dispatchEvent(new CustomEvent('bc:mobile-open-search-result',{detail:result}));
+         }));
+         matches.append(row);
+       }
+       if(!data.results.length)matches.append(create('p','Nenhum resultado encontrado.'));
+     }catch(e){status(e.message);}
+     finally{searchButton.disabled=false;}
+   },'primary');
+   box.append(searchButton);
+   query.input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();searchButton.click();}});
  }
  async function showProfile(id){
    const box=open('Perfil de membro'),d=await request('/users/'+id),p=d.profile;
