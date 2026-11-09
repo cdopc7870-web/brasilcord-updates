@@ -3,114 +3,38 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#082d2a">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="BrasilCord">
-  <meta name="description" content="BrasilCord Mobile — converse com amigos, acesse comunidades e mensagens na sua conta BrasilCord.">
-  <meta name="color-scheme" content="dark">
-  <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self'; img-src 'self' https://brasilcord-sinalizacao-dkx157.onrender.com data: blob:; media-src 'self' blob:; connect-src 'self' https://brasilcord-sinalizacao-dkx157.onrender.com wss://brasilcord-sinalizacao-dkx157.onrender.com; manifest-src 'self'; worker-src 'self'; font-src 'self'; upgrade-insecure-requests">
-  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="theme-color" content="#0a1826">
+  <meta name="robots" content="noindex,follow">
+  <title>BrasilCord Mobile — mesmo aplicativo do PC</title>
+  <meta name="description" content="BrasilCord Mobile agora utiliza a mesma interface do BrasilCord Web, adaptada para seu celular.">
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="./icon-192.png">
-  <link rel="stylesheet" href="./styles.css">
-  <link rel="stylesheet" href="./advanced.css">
-  <link rel="stylesheet" href="./founder-feedback.css">
-  <title>BrasilCord Mobile</title>
-  <script defer src="./app.js"></script>
-  <script defer src="./voice.js"></script>
-  <script defer src="./tools.js"></script>
-  <script defer src="./founder-feedback.js"></script>
+  <style>
+    :root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#071821;color:#f2f8f7}
+    *{box-sizing:border-box}body{margin:0;min-height:100dvh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 60% 10%,#174b4b 0%,transparent 50%),#071821}
+    main{text-align:center;width:min(430px,100%);padding:29px 23px;border:1px solid #ffffff2c;border-radius:24px;background:#112231;box-shadow:0 25px 80px #0005}
+    img{width:92px;height:92px;object-fit:contain}h1{font-size:27px;margin:14px 0 10px}p{color:#b9d3d5;line-height:1.6}
+    a{display:block;border-radius:12px;padding:15px 18px;margin:14px 0;color:#12252c;background:#f6d85b;font-weight:800;text-decoration:none}
+    small{color:#9db3bc}
+  </style>
+  <script>
+    (() => {
+      const params=new URLSearchParams(location.search);
+      const target=new URL('https://cdopc7870-web.github.io/brasilcord-web/');
+      target.searchParams.set('app','1');
+      if(params.get('cadastro')==='1')target.searchParams.set('cadastro','1');
+      if(params.get('install')==='1')target.searchParams.set('install','1');
+      // Login e comunidades agora usam a mesma interface Web/PC.
+      location.replace(target.href);
+    })();
+  </script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Pular para conversas</a>
-  <div id="app" class="app">
-    <header class="topbar">
-      <a href="../" class="brand" title="Site BrasilCord"><span class="brand-icon">BC</span><span>Brasil<span class="accent">Cord</span></span></a>
-      <div class="top-actions">
-        <span id="service-state" class="service-state" role="status">Verificando conexão</span>
-        <button id="install" class="install" type="button" hidden>Instalar app</button>
-        <button id="login-open" type="button" class="login-open">Entrar</button>
-        <button id="logout" type="button" hidden>Sair</button>
-      </div>
-    </header>
-    <div class="layout">
-      <nav class="rail" aria-label="Seções do BrasilCord">
-        <button type="button" class="rail-btn current" data-tab="communities" aria-label="Comunidades" title="Comunidades">⌂</button>
-        <button type="button" class="rail-btn" data-tab="dms" aria-label="Mensagens privadas" title="Mensagens privadas">✉<span id="unread-badge" class="rail-badge" hidden></span></button>
-        <button type="button" class="rail-btn" data-tab="friends" aria-label="Amigos" title="Amigos">♙</button>
-        <button type="button" class="rail-btn" data-tab="requests" aria-label="Solicitações" title="Solicitações">▣<span id="request-badge" class="rail-badge" hidden></span></button>
-        <div class="rail-spacer"></div>
-        <a class="rail-btn support" href="https://www.redeark.com/produtos?categoria=brasilcord" target="_blank" rel="noopener noreferrer" aria-label="Apoiar o BrasilCord" title="Apoiar BrasilCord">♡</a>
-      </nav>
-      <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header"><div><span class="eyebrow">MINHA ÁREA</span><h2 id="sidebar-title">Comunidades</h2></div><button type="button" id="sidebar-close" class="icon-btn sidebar-close" aria-label="Fechar menu">✕</button></div>
-        <div id="sidebar-list" class="sidebar-list"></div>
-        <div id="sidebar-footer" class="sidebar-footer">
-          <button id="community-create" type="button">+ Criar comunidade</button>
-          <button id="community-join" type="button">Entrar por convite</button>
-        </div>
-      </aside>
-      <main id="main" class="main">
-        <div class="chat-header">
-          <button id="sidebar-toggle" type="button" class="icon-btn menu-toggle" aria-label="Abrir comunidades">☰</button>
-          <div class="channel-heading"><span id="channel-kicker" class="eyebrow">BRASILCORD MOBILE</span><h1 id="channel-title">Sua comunidade. Em qualquer lugar.</h1></div>
-          <span id="user-name" class="user-name" hidden></span>
-        </div>
-        <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
-        <div id="welcome" class="welcome">
-          <div class="hero-scene"><div class="sun"></div><span class="landscape">🇧🇷</span></div>
-          <h2>O BrasilCord agora cabe no seu bolso.</h2>
-          <p>Acesse suas comunidades, amigos e mensagens com a mesma conta do aplicativo para PC.</p>
-          <div class="welcome-buttons"><button id="welcome-login" type="button" class="primary">Entrar na minha conta</button><button id="welcome-install" type="button" class="secondary" hidden>Instalar no celular</button></div>
-          <p class="disclaimer">Versão beta web. Chamadas de voz, vídeo e transmissão ainda serão adaptadas ao navegador mobile.</p>
-        </div>
-        <section id="content" class="content" aria-label="Conteúdo" hidden></section>
-        <form id="composer" class="composer" hidden>
-          <label for="message-input" class="sr-only">Sua mensagem</label>
-          <input id="message-input" maxlength="2000" placeholder="Escreva uma mensagem..." autocomplete="off" required>
-          <button type="submit" class="primary">Enviar</button>
-        </form>
-      </main>
-    </div>
-    <nav class="bottomnav" aria-label="Navegação mobile">
-      <button data-tab="communities" class="current" type="button"><span>⌂</span>Comunidades</button>
-      <button data-tab="dms" type="button"><span>✉</span>Mensagens</button>
-      <button data-tab="friends" type="button"><span>♙</span>Amigos</button>
-      <button data-tab="requests" type="button"><span>▣</span>Pedidos</button>
-    </nav>
-  </div>
-
-  <dialog id="auth-dialog" class="dialog">
-    <form id="auth-form" class="dialog-inner">
-      <div class="dialog-heading"><div><span class="eyebrow">BRASILCORD</span><h2 id="auth-title">Entrar na sua conta</h2></div><button type="button" class="close" data-close="auth-dialog" aria-label="Fechar">✕</button></div>
-      <p>Use a mesma conta do BrasilCord para PC.</p>
-      <label id="username-wrap" hidden>Nome de usuário<input id="auth-username" name="username" autocomplete="username" minlength="3" maxlength="28"></label>
-      <label>E-mail<input id="auth-email" name="email" autocomplete="email" type="email" required></label>
-      <label>Senha<input id="auth-password" name="password" type="password" minlength="8" required autocomplete="current-password"></label>
-      <p id="auth-feedback" role="status" class="form-feedback"></p>
-      <button type="submit" class="primary" id="auth-submit">Entrar</button>
-      <button type="button" class="text-btn" id="auth-switch">Criar uma conta BrasilCord</button>
-    </form>
-    <form id="otp-form" class="dialog-inner" hidden>
-      <div class="dialog-heading"><h2>Verifique seu e-mail</h2><button type="button" class="close" data-close="auth-dialog" aria-label="Fechar">✕</button></div>
-      <p>Digite o código de 6 dígitos enviado para seu e-mail.</p>
-      <label>Código<input id="otp-code" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required autocomplete="one-time-code"></label>
-      <p id="otp-feedback" class="form-feedback" role="status"></p>
-      <button type="submit" class="primary">Confirmar código</button>
-      <button id="otp-back" type="button" class="text-btn">Voltar ao login</button>
-    </form>
-  </dialog>
-  <dialog id="action-dialog" class="dialog">
-    <form id="action-form" class="dialog-inner">
-      <div class="dialog-heading"><h2 id="action-title">Comunidade</h2><button type="button" class="close" data-close="action-dialog" aria-label="Fechar">✕</button></div>
-      <p id="action-description"></p>
-      <label id="action-label">Nome<input id="action-input" maxlength="200" required></label>
-      <p id="action-feedback" class="form-feedback" role="status"></p>
-      <button type="submit" class="primary" id="action-submit">Continuar</button>
-    </form>
-  </dialog>
-  <noscript>O BrasilCord Mobile precisa de JavaScript para funcionar.</noscript>
+  <main>
+    <img src="./icon-192.png" alt="BrasilCord">
+    <h1>BrasilCord Mobile 🇧🇷</h1>
+    <p>Agora o celular utiliza a mesma versão do BrasilCord para PC, com menus e botões adaptados à tela.</p>
+    <a href="https://cdopc7870-web.github.io/brasilcord-web/?app=1">Abrir BrasilCord Mobile</a>
+    <small>Se a abertura automática não funcionar, toque no botão acima.</small>
+  </main>
 </body>
 </html>
