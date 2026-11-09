@@ -6,14 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#071b20">
   <meta name="color-scheme" content="dark">
-  <meta name="description" content="Conheça o BrasilCord: comunidades, canais, conversas e calls com câmera e tela compartilhada. Baixe a versão oficial para Windows.">
+  <meta name="description" content="BrasilCord 🇧🇷: chats, comunidades e chamadas em um só lugar. Entre na sua conta, baixe para Windows ou instale no celular.">
   <meta name="robots" content="index,follow">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pt_BR">
   <meta property="og:title" content="BrasilCord — Sua comunidade tem um lugar aqui">
-  <meta property="og:description" content="Converse, crie comunidades, participe de calls e compartilhe momentos. Conheça o BrasilCord para Windows.">
+  <meta property="og:description" content="💬 Chats, 🎙️ chamadas e 🌎 comunidades. Experimente o BrasilCord na web, no Windows e no celular.">
   <meta property="og:url" content="https://cdopc7870-web.github.io/brasilcord-updates/">
   <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="author" content="BrasilCord">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="BrasilCord — Sua comunidade. Seu mundo.">
+  <meta name="twitter:description" content="Converse, crie comunidades e faça chamadas. Feito no Brasil. 🇧🇷">
+  <link rel="canonical" href="https://cdopc7870-web.github.io/brasilcord-updates/">
   <title>BrasilCord — Comunidades, conversas e calls</title>
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./styles.css">
@@ -40,9 +45,10 @@
         <span class="menu-label">Menu</span>
       </button>
       <nav class="main-nav" id="main-nav" aria-label="Navegação principal">
+        <a href="#topo" class="nav-home">Início</a>
         <a href="#recursos">Recursos</a>
         <a href="#comunidades">Comunidades</a>
-        <a href="#sobre">Sobre</a>
+        <a href="#sobre">Sobre nós</a>
         <a class="nav-login" href="./mobile/?login=1">🔐 Entrar</a>
         <a class="nav-install" href="./mobile/?install=1">📱 Instalar</a>
         <a class="nav-download" href="#baixar">Baixar <span aria-hidden="true">↗</span></a>
@@ -68,7 +74,7 @@
       <div class="hero-copy">
         <div class="eyebrow"><span class="pulse" aria-hidden="true"></span> <span class="bc-flag" aria-hidden="true">🇧🇷</span> Feito no Brasil, para conectar pessoas <span class="bc-spark">✨</span></div>
         <h1 id="hero-title">Seu lugar de <span class="gradient-text">conexão.</span><br><span class="bc-heading-small">Sua comunidade. Seu mundo.</span></h1>
-        <p class="hero-lead">💬 Converse com amigos, 🎙️ participe de chamadas e 🌎 crie comunidades do seu jeito. Tudo em um espaço com a energia e as cores do Brasil.</p>
+        <p class="hero-lead">Converse com amigos, crie comunidades e viva novas experiências em uma plataforma independente feita com a energia e as cores do Brasil.</p>
         <div class="hero-actions" aria-label="Comece agora no BrasilCord">
           <a class="button button-primary" id="hero-download" href="https://github.com/cdopc7870-web/brasilcord-updates/releases/latest" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v3h16v-3"/></svg>
@@ -135,9 +141,9 @@
     <section class="bc-modern-showcase container" aria-label="Explore o BrasilCord">
       <div class="bc-modern-showcase-title"><span class="bc-overline">POR QUE BRASILCORD?</span><h2>Conexões de verdade. <span>Experiência do seu jeito.</span></h2><p>Uma plataforma independente para sua galera se encontrar, sem complicação.</p></div>
       <div class="bc-modern-highlights">
-        <article class="bc-modern-highlight"><span class="bc-modern-emoji">💬</span><h3>Conversas que aproximam</h3><p>Mensagens privadas, canais e conversas com quem importa.</p></article>
-        <article class="bc-modern-highlight"><span class="bc-modern-emoji">🎥</span><h3>Chamadas e momentos</h3><p>Converse por voz ou vídeo e compartilhe sua tela em dispositivos compatíveis.</p></article>
-        <article class="bc-modern-highlight"><span class="bc-modern-emoji">🇧🇷</span><h3>Uma identidade só nossa</h3><p>Comunidades personalizadas em uma experiência pensada para o Brasil.</p></article>
+        <article class="bc-modern-highlight"><span class="bc-modern-emoji" aria-hidden="true">💬</span><h3>Conversas que aproximam</h3><p>Mensagens privadas, canais e conversas com quem importa.</p></article>
+        <article class="bc-modern-highlight"><span class="bc-modern-emoji" aria-hidden="true">🎥</span><h3>Chamadas e momentos</h3><p>Converse por voz ou vídeo e compartilhe sua tela em dispositivos compatíveis.</p></article>
+        <article class="bc-modern-highlight"><span class="bc-modern-emoji" aria-hidden="true">🇧🇷</span><h3>Uma identidade só nossa</h3><p>Comunidades personalizadas em uma experiência pensada para o Brasil.</p></article>
       </div>
     </section>
     <section class="feature-strip" aria-label="Destaques da plataforma">
@@ -147,6 +153,16 @@
         <span><span aria-hidden="true">#</span> Canais e comunidades</span>
         <span><span aria-hidden="true">✦</span> Identidade brasileira</span>
       </div>
+    </section>
+
+    <section class="bc-steps container" id="como-comecar" aria-labelledby="bc-steps-heading">
+      <div class="bc-steps-heading"><span class="section-kicker">✨ SIMPLES DE COMEÇAR</span><h2 id="bc-steps-heading">Três passos para <span>fazer parte.</span></h2></div>
+      <div class="bc-steps-grid">
+        <article class="bc-step"><span class="bc-step-number">01</span><span class="bc-step-icon" aria-hidden="true">🔐</span><h3>Entre ou crie sua conta</h3><p>Use o login oficial do BrasilCord para acessar seus amigos e comunidades.</p></article>
+        <article class="bc-step"><span class="bc-step-number">02</span><span class="bc-step-icon" aria-hidden="true">🧭</span><h3>Encontre sua galera</h3><p>Participe de comunidades, descubra canais e adicione amigos.</p></article>
+        <article class="bc-step"><span class="bc-step-number">03</span><span class="bc-step-icon" aria-hidden="true">💬</span><h3>Comece a conversar</h3><p>Troque mensagens e entre em calls, conforme os recursos disponíveis no dispositivo.</p></article>
+      </div>
+      <a class="bc-steps-link" href="./mobile/?login=1">Começar agora <span aria-hidden="true">↗</span></a>
     </section>
 
     <section id="recursos" class="section container" aria-labelledby="features-title">
@@ -207,7 +223,7 @@
         <div class="download-icon" aria-hidden="true"><span>↓</span></div>
         <span class="section-kicker">🇧🇷 A SUA PRÓXIMA CONEXÃO COMEÇA AQUI</span>
         <h2>Seu próximo servidor <span>começa aqui.</span></h2>
-        <p>Instale no Windows ou experimente a versão beta web mobile no navegador do seu celular.</p>
+        <p>Escolha onde conversar: baixe o aplicativo oficial para Windows ou instale a experiência web na tela inicial do celular.</p>
         <div class="download-actions">
           <a class="button button-primary" id="primary-download" href="https://github.com/cdopc7870-web/brasilcord-updates/releases/latest" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v3h16v-3"/></svg>
@@ -217,7 +233,8 @@
           <a class="button bc-install-mobile-button" href="./mobile/?install=1">📲 Instalar no telefone</a>
         </div>
         <div class="release-line"><span class="release-indicator" aria-hidden="true"></span><span id="release-state" aria-live="polite">Confira a versão mais recente no GitHub Releases.</span></div>
-        <small class="download-note">Instalador distribuído pelo repositório oficial. Pode aparecer um aviso do Windows se o instalador ainda não tiver assinatura digital.</small>
+        <div class="bc-platform-tips"><p>💻 <strong>Windows:</strong> obtenha o instalador oficial no GitHub Releases.</p><p>🤖 <strong>Android:</strong> abra no Chrome → menu ⋮ → Instalar aplicativo.</p><p>🍎 <strong>iPhone:</strong> abra no Safari → Compartilhar → Adicionar à Tela de Início.</p></div>
+        <small class="download-note">Instalador distribuído pelo repositório oficial. Pode aparecer um aviso do Windows se o instalador ainda não tiver assinatura digital. O app web usa internet e alguns recursos dependem do navegador.</small>
       </div>
     </section>
 
@@ -241,7 +258,7 @@
       <div><a class="brand footer-brand" href="#topo"><span class="brand-mark" aria-hidden="true"><span>BC</span></span><span>Brasil<span class="brand-accent">Cord</span></span></a><p>Conectando pessoas e comunidades com a cara do Brasil.</p></div>
       <div class="footer-links"><a href="#recursos">Recursos</a><a href="#comunidades">Comunidade oficial</a><a href="#baixar">Baixar</a><a href="./mobile/">Mobile beta</a><a href="https://github.com/cdopc7870-web/brasilcord-updates" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
     </div>
-    <div class="container footer-bottom"><span>© <span id="copyright-year">2026</span> BrasilCord. Projeto independente.</span><span>Feito no Brasil <span aria-hidden="true">🇧🇷</span></span></div>
+    <div class="container footer-bottom"><span>© <span id="copyright-year">2026</span> BrasilCord. Projeto independente, não afiliado ao Discord.</span><span>Feito no Brasil <span aria-hidden="true">🇧🇷</span></span></div>
   </footer>
 </body>
 </html>
