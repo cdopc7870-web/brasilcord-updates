@@ -43,6 +43,9 @@ jobs:
           test -s docs/mobile/icon-512.png
           node --check docs/mobile/app.js
           node --check docs/mobile/voice.js
+          grep -q 'function renegotiateAll' docs/mobile/voice.js
+          grep -q "addEventListener('unmute'" docs/mobile/voice.js
+          grep -q 'mobile-call-avatar' docs/mobile/advanced.css
           node --check docs/mobile/tools.js
           test -s docs/mobile/advanced.css
           grep -q 'voice.js' docs/mobile/index.html
