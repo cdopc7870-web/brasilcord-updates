@@ -355,6 +355,15 @@
       window.addEventListener('load',()=>void navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{}));
   }
   $('login-open').addEventListener('click',openAuth);
+  // O site principal pode abrir diretamente o login, sem enviar senhas ou tokens por URL.
+  // Aceita somente um sinal de navegação, nunca credenciais.
+  const entryParams=new URLSearchParams(window.location.search);
+  if(entryParams.get('login')==='1'||entryParams.get('cadastro')==='1'){
+    if(entryParams.get('cadastro')==='1')switchAuth();
+    openAuth();
+    window.history.replaceState(null,'',window.location.pathname+window.location.hash);
+  }
+
   $('welcome-login').addEventListener('click',()=>state.token?chooseTab('communities'):openAuth());
   $('auth-switch').addEventListener('click',switchAuth);
   $('auth-form').addEventListener('submit',async event=>{
