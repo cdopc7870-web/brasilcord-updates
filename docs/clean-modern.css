@@ -94,3 +94,32 @@ main,.site-footer,.site-header{position:relative;z-index:1}
 @media(max-width:620px){.bc-steps{padding:25px 0 42px}.bc-steps-grid{grid-template-columns:1fr}.bc-step{min-height:0}.bc-steps-heading h2{font-size:30px}.bc-platform-tips{gap:8px}.bc-platform-tips p{padding:12px}.main-nav .nav-home{display:block}}
 
 .main-nav a.bc-nav-active:not(.nav-download):not(.nav-install):not(.nav-login){background:rgba(58,210,141,.13)!important;color:#9ff5c5!important;border-radius:10px}
+
+
+/* Guia de instalação segura */
+.bc-windows-advice{display:flex;gap:16px;align-items:flex-start;max-width:900px;margin:24px auto 8px;padding:21px 23px;text-align:left;border:1px solid rgba(255,209,108,.3);border-radius:18px;background:linear-gradient(120deg,rgba(111,82,23,.2),rgba(17,52,51,.7));box-shadow:0 9px 24px rgba(0,0,0,.1)}
+.bc-windows-advice-icon{font-size:28px;line-height:1.4;flex:none}
+.bc-windows-advice h3{margin:0 0 10px;font-size:17px;color:#ffe6a2}
+.bc-windows-advice p{margin:0 0 9px;font-size:13px;line-height:1.7;color:#c5d9d6}
+.bc-windows-advice p:last-child{margin-bottom:0}
+.bc-windows-advice strong{color:#f8e4ae}
+/* Contribuições voluntárias */
+.bc-support-section{padding:28px 0 62px;scroll-margin-top:90px}
+.bc-support-main{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(200px,.8fr);align-items:center;gap:20px;min-height:300px;padding:clamp(25px,4vw,48px);border:1px solid rgba(131,243,189,.26);border-radius:27px;background:linear-gradient(130deg,#102d35 0%,#103a36 50%,#17334d 100%);box-shadow:0 24px 66px rgba(0,0,0,.17)}
+.bc-support-main:before{content:"";position:absolute;z-index:-1;inset:-150px -110px auto auto;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(74,228,148,.17),transparent 67%);pointer-events:none}
+.bc-support-eyebrow{display:inline-block;font-size:11px;letter-spacing:.15em;font-weight:900;color:#a5f6c9}
+.bc-support-copy h2{margin:12px 0 14px;font-size:clamp(27px,3.6vw,47px);line-height:1.14;letter-spacing:-.045em;color:#fff}
+.bc-support-copy h2 span{background:linear-gradient(110deg,#6ef5af,#ffe67d);-webkit-background-clip:text;background-clip:text;color:transparent}
+.bc-support-copy>p{max-width:635px;color:#c8ded9;line-height:1.75;font-size:14px}
+.bc-support-benefits{display:flex;flex-wrap:wrap;gap:8px;margin:19px 0 23px}
+.bc-support-benefits span{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(233,255,235,.13);color:#e4f7ec;font-size:12px}
+.bc-support-button{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:50px;padding:12px 20px;border-radius:13px;background:linear-gradient(120deg,#f9de6a,#52e79a);color:#143329;text-decoration:none;font-size:14px;font-weight:900;box-shadow:0 10px 26px rgba(0,0,0,.16);transition:transform .2s,filter .2s}
+.bc-support-button:hover{transform:translateY(-2px);filter:brightness(1.09)}
+.bc-support-copy small{display:block;max-width:640px;color:#b2cbc8;font-size:11px;line-height:1.6;margin-top:13px}
+.bc-support-visual{position:relative;min-height:245px;display:grid;place-items:center}
+.bc-support-heart{width:176px;height:176px;border-radius:50%;display:grid;place-items:center;font-size:76px;background:radial-gradient(circle at 35% 28%,#298f70,#143d59 68%);border:1px solid rgba(119,255,192,.35);box-shadow:0 0 65px rgba(53,225,145,.18);animation:bcPreviewFloat 8s ease-in-out infinite}
+.bc-support-orbit{position:absolute;display:grid;place-items:center;width:52px;height:52px;border-radius:16px;background:#153d44;border:1px solid rgba(222,255,236,.21);font-size:25px;box-shadow:0 10px 27px rgba(0,0,0,.24)}
+.bc-support-orbit-a{left:7%;top:10%}.bc-support-orbit-b{right:5%;top:12%}.bc-support-orbit-c{right:10%;bottom:8%}
+@media(max-width:800px){.bc-support-main{grid-template-columns:1fr}.bc-support-visual{min-height:175px}.bc-support-heart{width:128px;height:128px;font-size:56px}.bc-support-orbit{width:45px;height:45px}.bc-support-section{padding-bottom:42px}}
+@media(max-width:620px){.bc-windows-advice{padding:17px;gap:11px}.bc-windows-advice-icon{font-size:23px}.bc-windows-advice h3{font-size:15px}.bc-windows-advice p{font-size:12px}.bc-support-main{padding:24px 18px}.bc-support-benefits{gap:6px}.bc-support-benefits span{font-size:11px}.bc-support-button{width:100%}}
+@media(prefers-reduced-motion:reduce){.bc-support-heart{animation:none}.bc-support-button{transition:none}}
