@@ -70,3 +70,30 @@
 
 #content .message-mentioned{background:#514c244a;border-left:3px solid #ffe474;border-radius:8px;padding:8px 6px}
 #content .message-mentioned .message-head strong{color:#ffe786}
+
+/* Participantes em linhas compactas com avatar redondo, e vídeo em seção separada. */
+.mobile-call-person{
+  display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:9px 11px;
+  border-radius:12px;min-height:52px;min-width:0;
+}
+.mobile-call-avatar{
+  display:grid;place-items:center;
+  width:40px!important;height:40px!important;min-width:40px!important;
+  min-height:40px!important;max-width:40px!important;max-height:40px!important;
+  flex:0 0 40px!important;aspect-ratio:1/1;border-radius:50%!important;
+  overflow:hidden;box-sizing:border-box;font-size:11px;line-height:1;
+}
+.mobile-call-avatar img{
+  display:block!important;width:100%!important;height:100%!important;
+  max-width:100%!important;max-height:100%!important;
+  object-fit:cover!important;object-position:center;border-radius:50%!important;
+}
+.mobile-call-person strong{flex:1;min-width:55px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mobile-call-person input[type=range]{flex:1 1 95px;max-width:150px}
+.mobile-call-person>button{flex:0 0 auto}
+.mobile-video-tile.waiting:after{
+  content:'Aguardando transmissão…';display:grid;place-items:center;
+  position:absolute;inset:25% 8%;background:#09212ca8;color:#dbfff0;
+  text-align:center;border-radius:10px;font-size:12px;pointer-events:none;
+}
+@media(max-width:690px){.mobile-call-people{grid-template-columns:1fr}.mobile-call-avatar{flex-basis:40px!important}}
