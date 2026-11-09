@@ -350,6 +350,20 @@
     };
     $('install').addEventListener('click',()=>void prompt());
     $('welcome-install').addEventListener('click',()=>void prompt());
+    // Link da página inicial para instalação no celular.
+    if(new URLSearchParams(location.search).get('install')==='1'){
+      window.history.replaceState(null,'',location.pathname+location.hash);
+      if(!standalone){
+        $('welcome-install').hidden=false;
+        $('welcome-install').focus({preventScroll:true});
+        const tip=document.createElement('p');
+        tip.className='install-instructions';
+        tip.textContent=/iPhone|iPad|iPod/i.test(navigator.userAgent)
+          ? 'Para adicionar na tela inicial: abra no Safari, toque em Compartilhar e selecione Adicionar à Tela de Início.'
+          : 'Para instalar no Android: toque no botão Instalar no celular. Caso o navegador não ofereça a instalação automática, abra o menu ⋮ e selecione Instalar app ou Adicionar à tela inicial.';
+        $('welcome-install').insertAdjacentElement('afterend',tip);
+      }
+    }
     window.addEventListener('appinstalled',()=>{$('install').hidden=true;$('welcome-install').hidden=true;});
     if('serviceWorker' in navigator&&location.protocol==='https:')
       window.addEventListener('load',()=>void navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{}));
