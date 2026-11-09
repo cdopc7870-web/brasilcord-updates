@@ -48,8 +48,8 @@ jobs:
           grep -q 'mobile-call-avatar' docs/mobile/advanced.css
           node --check docs/mobile/tools.js
           test -s docs/mobile/advanced.css
-          grep -q 'voice.js' docs/mobile/index.html
-          grep -q 'tools.js' docs/mobile/index.html
+          grep -q 'brasilcord-web/' docs/mobile/index.html
+          grep -q "location.replace(target.href)" docs/mobile/index.html
           node --check docs/mobile/sw.js
           node -e "const fs=require('fs');const m=JSON.parse(fs.readFileSync('docs/mobile/manifest.webmanifest','utf8'));if(m.display!=='standalone'||!m.start_url)process.exit(1)"
           node --check docs/site.js
