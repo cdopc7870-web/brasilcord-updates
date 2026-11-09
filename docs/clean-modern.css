@@ -92,3 +92,5 @@ main,.site-footer,.site-header{position:relative;z-index:1}
 @media(max-width:1100px){.main-nav .nav-home{display:none}}
 @media(max-width:850px){.bc-steps-grid{gap:10px}.bc-step{padding:18px}.bc-platform-tips{grid-template-columns:1fr;max-width:600px}}
 @media(max-width:620px){.bc-steps{padding:25px 0 42px}.bc-steps-grid{grid-template-columns:1fr}.bc-step{min-height:0}.bc-steps-heading h2{font-size:30px}.bc-platform-tips{gap:8px}.bc-platform-tips p{padding:12px}.main-nav .nav-home{display:block}}
+
+.main-nav a.bc-nav-active:not(.nav-download):not(.nav-install):not(.nav-login){background:rgba(58,210,141,.13)!important;color:#9ff5c5!important;border-radius:10px}
