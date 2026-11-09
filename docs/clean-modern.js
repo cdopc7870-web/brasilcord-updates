@@ -3,7 +3,7 @@
   // Animacoes leves; nao bloqueiam conteudo nem dependem de bibliotecas.
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   const init = () => {
-    const elements = document.querySelectorAll('.bc-modern-showcase-title,.bc-modern-highlight,.feature-card,.community-copy,.about-copy,.download-panel');
+    const elements = document.querySelectorAll('.bc-modern-showcase-title,.bc-modern-highlight,.feature-card,.community-copy,.about-copy,.download-panel,.bc-support-main');
     if (reduced.matches || !('IntersectionObserver' in window)) return;
     const observer = new IntersectionObserver((entries)=>{
       for(const entry of entries){
@@ -12,7 +12,7 @@
         observer.unobserve(entry.target);
       }
     },{threshold:.08,rootMargin:'0px 0px -20px 0px'});
-    const sections=[...document.querySelectorAll('#recursos,#comunidades,#sobre,#baixar')];
+    const sections=[...document.querySelectorAll('#recursos,#comunidades,#sobre,#baixar,#apoiar')];
     const links=[...document.querySelectorAll('#main-nav a[href^="#"]')];
     if(sections.length&&links.length){
       const navigationObserver=new IntersectionObserver(entries=>{
