@@ -5,6 +5,7 @@
   let token=null,user=null,room=null,ws=null,local=null,camera=null,screen=null,muted=false,deaf=false,serverMuted=false,serverDeaf=false;
   let generation=0,keepAlive=null,iceServers=[{urls:'stun:stun.l.google.com:19302'}];
   const peers=new Map(),participants=new Map(),candidateQueues=new Map(),volumes=new Map(),localMute=new Set(),peerTasks=new Map();
+  const ignoredOffers=new Set();
   let meterContext=null,meterTimer=null;
   const meters=new Map();
   function meterFor(id,stream){
@@ -54,14 +55,16 @@
     if(type==='camera')camera=null;else screen=null;
     trackStop(s);
     for(const record of peers.values())void record.senders[type]?.replaceTrack(null).catch(()=>{});
-    const tile=$('mobile-call-videos').querySelector('[data-kind="'+type+'"][data-peer="self"]');
-    tile?.remove();mediaState();render();
+    const tile=$('mobile-call-videos').querySelector('.mobile-video-tile[data-kind="'+type+'"][data-peer="self"]');
+    tile?.remove();mediaState();renegotiateAll();render();
   }
   function clearPeer(id){
     const p=peers.get(id);if(p){p.pc.close();peers.delete(id);}
-    candidateQueues.delete(id);peerTasks.delete(id);removeMeter(id);
-    for(const element of overlay.querySelectorAll('[data-peer="'+id+'"]')){
-      if(element.tagName==='AUDIO'||element.tagName==='VIDEO')element.srcObject=null;
+    candidateQueues.delete(id);peerTasks.delete(id);ignoredOffers.delete(id);removeMeter(id);
+    for(const element of overlay.querySelectorAll('.mobile-video-tile[data-peer="'+id+'"],audio[data-peer="'+id+'"]')){
+      const video=element.querySelector?.('video');
+      if(video)video.srcObject=null;
+      if(element.tagName==='AUDIO')element.srcObject=null;
       element.remove();
     }
   }
@@ -80,12 +83,22 @@
     let video=$('mobile-call-videos').querySelector('video[data-peer="'+id+'"][data-kind="'+kind+'"]');
     if(!video){
       const wrap=document.createElement('div');wrap.className='mobile-video-tile';
+      wrap.dataset.peer=id;wrap.dataset.kind=kind;
       video=document.createElement('video');video.autoplay=true;video.playsInline=true;video.muted=isSelf;
       video.dataset.peer=id;video.dataset.kind=kind;
       const text=document.createElement('span');text.textContent=(kind==='screen'?'🖥 ':'📷 ')+name;
       wrap.append(video,text);$('mobile-call-videos').append(wrap);
     }
-    video.srcObject=stream;void video.play().catch(()=>{});
+    video.srcObject=stream;
+    if(!stream.getVideoTracks()[0]?.muted||isSelf)void video.play().catch(()=>{});
+    const update=()=>{
+      const playing=stream.getVideoTracks()[0]?.readyState==='live'&&!stream.getVideoTracks()[0]?.muted;
+      video.closest('.mobile-video-tile')?.classList.toggle('waiting',!playing);
+      if(playing)void video.play().catch(()=>status('Toque no vídeo para reproduzir.'));
+    };
+    const track=stream.getVideoTracks()[0];
+    if(track){track.addEventListener('unmute',update);track.addEventListener('mute',update);track.addEventListener('ended',update);}
+    update();
   }
   function render(){
     $('mobile-call-mute').textContent=serverMuted?'🔇 Moderação':muted?'🔇 Silenciado':'🎙 Microfone';
@@ -96,9 +109,15 @@
     const everyone=[{...user,id:user?.id,name:label(user)+' (você)',self:true,muted:muted||serverMuted},...participants.values()];
     for(const p of everyone){
       const card=document.createElement('article');card.className='mobile-call-person';card.dataset.userId=p.self?'self':p.id;
-      const ava=document.createElement('span');ava.className='mobile-call-avatar';ava.textContent=label(p).slice(0,2).toUpperCase();
-      const url=p.avatarUrl;if(typeof url==='string'&&url.startsWith(API+'/')){
-        const img=document.createElement('img');img.src=url;img.alt='';ava.replaceChildren(img);
+      const ava=document.createElement('span');ava.className='mobile-call-avatar';
+      const fallback=(label(p).replace(' (você)','').trim().slice(0,2)||'BC').toUpperCase();
+      ava.textContent=fallback;
+      const url=p.avatarUrl;
+      if(typeof url==='string'&&url.startsWith(API+'/api/platform/media/')){
+        const img=document.createElement('img');img.src=url;img.alt='';img.width=38;img.height=38;
+        img.loading='lazy';img.decoding='async';
+        img.addEventListener('error',()=>{img.remove();ava.textContent=fallback;},{once:true});
+        ava.replaceChildren(img);
       }
       const name=document.createElement('strong');name.textContent=(p.muted?'🔇 ':'')+label(p);
       card.append(ava,name);
@@ -150,8 +169,24 @@
     for(const candidate of candidateQueues.get(id)||[])await pc.addIceCandidate(candidate);
     candidateQueues.delete(id);
   }
+  async function stable(pc){
+    if(pc.signalingState==='stable')return true;
+    if(pc.signalingState==='closed')return false;
+    return new Promise(resolve=>{
+      let timer;
+      const done=()=>{if(pc.signalingState==='stable'||pc.signalingState==='closed'){
+        clearTimeout(timer);pc.removeEventListener('signalingstatechange',done);resolve(pc.signalingState==='stable');
+      }};
+      pc.addEventListener('signalingstatechange',done);
+      timer=setTimeout(()=>{pc.removeEventListener('signalingstatechange',done);resolve(false);},8000);
+    });
+  }
+  function renegotiateAll(){
+    for(const id of peers.keys())queue(id,()=>offer(id));
+  }
   async function offer(id){
     const {pc}=await ensurePeer(id);
+    if(!room||!await stable(pc))return;
     await pc.setLocalDescription(await pc.createOffer());
     send({type:'signal',to:id,payload:{type:'offer',sdp:pc.localDescription.sdp}});
   }
@@ -159,11 +194,17 @@
     if(!room||!payload||!['offer','answer','candidate'].includes(payload.type))return;
     const {pc}=await ensurePeer(id);
     if(payload.type==='candidate'){
+      if(ignoredOffers.has(id))return;
       if(!pc.remoteDescription){const queue=candidateQueues.get(id)||[];if(queue.length<60)queue.push(payload.candidate);candidateQueues.set(id,queue);}
       else await pc.addIceCandidate(payload.candidate);
       return;
     }
     if(payload.type==='offer'){
+      const collision=pc.signalingState!=='stable';
+      const polite=String(user?.id||'')>String(id);
+      if(collision&&!polite){ignoredOffers.add(id);return;}
+      ignoredOffers.delete(id);
+      if(collision)await pc.setLocalDescription({type:'rollback'});
       await pc.setRemoteDescription({type:'offer',sdp:payload.sdp});
       await flushCandidates(id,pc);
       await pc.setLocalDescription(await pc.createAnswer());
@@ -236,8 +277,8 @@
       if(type==='camera')camera=stream;else screen=stream;
       const track=stream.getVideoTracks()[0];
       track.addEventListener('ended',()=>stopVideo(type),{once:true});
-      for(const record of peers.values())await record.senders[type].replaceTrack(track);
-      tile('self',type,'Você',stream,true);mediaState();render();
+      await Promise.all([...peers.values()].map(record=>record.senders[type].replaceTrack(track)));
+      tile('self',type,'Você',stream,true);mediaState();renegotiateAll();render();
     }catch(e){status(e.name==='NotAllowedError'?'Permissão de câmera ou tela negada.':e.message);}
   }
   $('mobile-call-close').addEventListener('click',()=>leave());
