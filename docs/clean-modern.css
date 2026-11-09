@@ -70,3 +70,25 @@ main,.site-footer,.site-header{position:relative;z-index:1}
 @media(max-width:850px){.hero{grid-template-columns:1fr!important;padding-top:62px!important;padding-bottom:36px!important;gap:28px!important}.hero-copy{text-align:center}.hero .eyebrow{justify-content:center}.hero h1,.hero-lead{margin-inline:auto!important}.hero-actions,.hero-footnotes{justify-content:center}.preview-wrap{width:min(650px,100%);margin-inline:auto}.bc-modern-showcase-title{text-align:center;margin-inline:auto}.bc-modern-highlights{gap:10px}.bc-modern-highlight{padding:17px}.bc-modern-highlight h3{font-size:16px}}
 @media(max-width:620px){.site-header{height:auto;min-height:70px}.header-content{min-height:70px}.main-nav{gap:8px!important}.main-nav .nav-login,.main-nav .nav-install,.main-nav .nav-download{width:100%!important;padding:11px 13px!important;min-height:43px}.hero{padding-top:44px!important}.hero h1{font-size:clamp(38px,10vw,55px)!important}.bc-heading-small{font-size:23px}.hero-actions{display:grid;grid-template-columns:1fr;gap:9px!important}.hero-actions .button{width:100%;min-height:50px!important;font-size:14px!important}.hero-footnotes{gap:7px 16px!important}.bc-modern-highlights{grid-template-columns:1fr;gap:12px}.bc-modern-highlight{min-height:0;padding:20px}.bc-modern-emoji{margin-bottom:13px}.bc-modern-showcase{padding-bottom:38px}.bc-modern-showcase-title h2{font-size:30px}.preview-wrap{animation:none}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}body:after,.preview-wrap,.bc-spark,.gradient-text{animation:none!important}.bc-animate-on-scroll{opacity:1;transform:none;transition:none}.bc-modern-highlight,.button,.main-nav>a{transition:none!important}}
+
+
+/* Segunda etapa — passos, mobile e acessibilidade */
+.bc-steps{padding:36px 0 64px}
+.bc-steps-heading{text-align:center;max-width:720px;margin:0 auto 27px}
+.bc-steps-heading h2{margin:11px 0 0;font-size:clamp(27px,3.5vw,43px);letter-spacing:-.04em;line-height:1.15}
+.bc-steps-heading h2 span{background:linear-gradient(100deg,#66f2b5,#ffe080);background-clip:text;-webkit-background-clip:text;color:transparent}
+.bc-steps-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.bc-step{position:relative;min-height:180px;padding:25px;border-radius:21px;border:1px solid rgba(139,222,183,.18);background:linear-gradient(138deg,rgba(17,53,49,.8),rgba(13,34,43,.74))}
+.bc-step-number{position:absolute;top:20px;right:22px;color:rgba(146,235,194,.25);font-size:25px;font-weight:900}
+.bc-step-icon{font-size:29px;width:50px;height:50px;display:grid;place-items:center;border-radius:15px;background:rgba(255,255,255,.06)}
+.bc-step h3{margin:18px 0 8px;font-size:17px;color:#f4fff9}
+.bc-step p{margin:0;color:#afc8bf;font-size:13px;line-height:1.65}
+.bc-steps-link{display:flex;align-items:center;justify-content:center;gap:8px;max-width:225px;min-height:44px;margin:23px auto 0;padding:10px 17px;border-radius:12px;border:1px solid rgba(88,237,163,.35);background:rgba(24,127,97,.2);font-weight:800;color:#bcffdb;text-decoration:none;transition:transform .2s,background .2s}
+.bc-steps-link:hover{transform:translateY(-2px);background:rgba(24,127,97,.35)}
+.bc-platform-tips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:26px auto 16px;text-align:left;width:min(820px,100%)}
+.bc-platform-tips p{font-size:12px;line-height:1.6;color:#c5e0d9;margin:0;padding:13px 14px;border-radius:13px;border:1px solid rgba(160,227,193,.18);background:rgba(10,39,41,.35)}
+.bc-platform-tips strong{color:#fff}
+#recursos,#sobre,#comunidades,#baixar,#topo{scroll-margin-top:90px}
+@media(max-width:1100px){.main-nav .nav-home{display:none}}
+@media(max-width:850px){.bc-steps-grid{gap:10px}.bc-step{padding:18px}.bc-platform-tips{grid-template-columns:1fr;max-width:600px}}
+@media(max-width:620px){.bc-steps{padding:25px 0 42px}.bc-steps-grid{grid-template-columns:1fr}.bc-step{min-height:0}.bc-steps-heading h2{font-size:30px}.bc-platform-tips{gap:8px}.bc-platform-tips p{padding:12px}.main-nav .nav-home{display:block}}
