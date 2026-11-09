@@ -1,0 +1,6 @@
+.main-nav .nav-install{display:inline-flex;align-items:center;justify-content:center;padding:10px 13px;border-radius:11px;border:1px solid rgba(255,222,105,.55);background:rgba(242,200,62,.13);color:#ffe78d;font-weight:850;white-space:nowrap}
+.main-nav .nav-install:hover{background:rgba(242,200,62,.25);color:#fff}
+.bc-install-mobile-button{background:linear-gradient(135deg,#1e785c,#125f78);border:1px solid #55d4a8;color:#f1fff8!important;box-shadow:0 8px 23px rgba(4,65,54,.25)}
+.bc-install-mobile-button:hover{background:linear-gradient(135deg,#288e6e,#1d7694);color:#fff}
+@media(max-width:900px){.main-nav .nav-install{font-size:12px;padding:9px 10px}}
+@media(max-width:620px){.main-nav .nav-install{width:100%;text-align:center}.hero-actions .bc-install-mobile-button,.download-actions .bc-install-mobile-button{width:100%}}
