@@ -53,6 +53,11 @@ jobs:
           node --check docs/mobile/sw.js
           node -e "const fs=require('fs');const m=JSON.parse(fs.readFileSync('docs/mobile/manifest.webmanifest','utf8'));if(m.display!=='standalone'||!m.start_url)process.exit(1)"
           node --check docs/site.js
+          node --check docs/clean-modern.js
+          test -s docs/clean-modern.css
+          grep -q 'bc-steps-grid' docs/index.html
+          grep -q 'mobile/?login=1' docs/index.html
+          grep -q 'mobile/?install=1' docs/index.html
           ! grep -Eq 'password|DATABASE_URL|RESEND_API_KEY|EMAIL_OTP_SECRET|BRASILCORD_OWNER_USER_ID' docs/index.html
 
       - name: Configurar GitHub Pages
