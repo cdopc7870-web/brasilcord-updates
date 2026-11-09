@@ -142,6 +142,14 @@
     else await selectChannel(texts[0]);
   }
   async function selectChannel(channel,quiet=false){
+    const entry={
+      'b76c0d04-2a6f-47a5-95d1-bc0fdc000015':'suggestion',
+      'b76c0d04-2a6f-47a5-95d1-bc0fdc000016':'bug'
+    }[channel?.id];
+    if(entry){
+      document.dispatchEvent(new CustomEvent('bc:mobile-feedback-open',{detail:{kind:entry}}));
+      closeSidebar();return;
+    }
     state.channel=channel;state.peer=null;state.tab='communities';
     document.dispatchEvent(new CustomEvent('bc:mobile-context',{detail:{channel,community:state.community,peer:null}}));
     setTitle('# '+channel.name,state.community?.name||'COMUNIDADE');
