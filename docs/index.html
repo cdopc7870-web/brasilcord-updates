@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <!-- Site oficial BrasilCord publicado por GitHub Pages. -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b111b">
+  <meta name="theme-color" content="#071b20">
   <meta name="color-scheme" content="dark">
   <meta name="description" content="Conheça o BrasilCord: comunidades, canais, conversas e calls com câmera e tela compartilhada. Baixe a versão oficial para Windows.">
   <meta name="robots" content="index,follow">
@@ -20,7 +20,9 @@
   <link rel="stylesheet" href="./nature-theme.css">
   <link rel="stylesheet" href="./login-landing.css">
   <link rel="stylesheet" href="./install-mobile-landing.css">
+  <link rel="stylesheet" href="./clean-modern.css">
   <script src="./site.js" defer></script>
+  <script src="./clean-modern.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#principal">Pular para o conteúdo</a>
@@ -41,8 +43,8 @@
         <a href="#recursos">Recursos</a>
         <a href="#comunidades">Comunidades</a>
         <a href="#sobre">Sobre</a>
-        <a class="nav-login" href="./mobile/?login=1">↪ Entrar no BrasilCord</a>
-        <a class="nav-install" href="./mobile/?install=1">📲 Instalar no celular</a>
+        <a class="nav-login" href="./mobile/?login=1">🔐 Entrar</a>
+        <a class="nav-install" href="./mobile/?install=1">📱 Instalar</a>
         <a class="nav-download" href="#baixar">Baixar <span aria-hidden="true">↗</span></a>
       </nav>
     </div>
@@ -64,10 +66,10 @@
         <div class="nature-shade"></div>
       </div>
       <div class="hero-copy">
-        <div class="eyebrow"><span class="pulse" aria-hidden="true"></span> <span class="bc-flag" aria-hidden="true">🇧🇷</span> Feito para quem vive em comunidade</div>
-        <h1 id="hero-title">O Brasil inteiro<br>em uma só <span class="gradient-text">conexão.</span></h1>
-        <p class="hero-lead">Onde a sua comunidade ganha vida. Conversas, amizades, calls e momentos incríveis em um aplicativo feito com a energia, as cores e a identidade do Brasil.</p>
-        <div class="hero-actions">
+        <div class="eyebrow"><span class="pulse" aria-hidden="true"></span> <span class="bc-flag" aria-hidden="true">🇧🇷</span> Feito no Brasil, para conectar pessoas <span class="bc-spark">✨</span></div>
+        <h1 id="hero-title">Seu lugar de <span class="gradient-text">conexão.</span><br><span class="bc-heading-small">Sua comunidade. Seu mundo.</span></h1>
+        <p class="hero-lead">💬 Converse com amigos, 🎙️ participe de chamadas e 🌎 crie comunidades do seu jeito. Tudo em um espaço com a energia e as cores do Brasil.</p>
+        <div class="hero-actions" aria-label="Comece agora no BrasilCord">
           <a class="button button-primary" id="hero-download" href="https://github.com/cdopc7870-web/brasilcord-updates/releases/latest" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v3h16v-3"/></svg>
             Baixar para Windows
@@ -77,9 +79,9 @@
         </div>
         <div class="bc-login-hero-note">Já tem uma conta? <a href="./mobile/?login=1">Faça login agora</a> · Novo por aqui? <a href="./mobile/?cadastro=1">Crie sua conta BrasilCord</a>.</div>
         <div class="hero-footnotes">
-          <span><span class="dot-check" aria-hidden="true">✓</span> Versão para Windows</span>
-          <span><span class="dot-check" aria-hidden="true">✓</span> Atualizações pelo GitHub</span>
-          <span><span class="dot-check" aria-hidden="true">✓</span> Login da mesma conta do aplicativo para PC</span>
+          <span><span class="dot-check" aria-hidden="true">✓</span> 💻 Windows</span>
+          <span><span class="dot-check" aria-hidden="true">✓</span> 📲 Instalação no celular</span>
+          <span><span class="dot-check" aria-hidden="true">✓</span> 🔐 Mesma conta no PC e na web</span>
         </div>
       </div>
 
@@ -130,6 +132,14 @@
       </div>
     </section>
 
+    <section class="bc-modern-showcase container" aria-label="Explore o BrasilCord">
+      <div class="bc-modern-showcase-title"><span class="bc-overline">POR QUE BRASILCORD?</span><h2>Conexões de verdade. <span>Experiência do seu jeito.</span></h2><p>Uma plataforma independente para sua galera se encontrar, sem complicação.</p></div>
+      <div class="bc-modern-highlights">
+        <article class="bc-modern-highlight"><span class="bc-modern-emoji">💬</span><h3>Conversas que aproximam</h3><p>Mensagens privadas, canais e conversas com quem importa.</p></article>
+        <article class="bc-modern-highlight"><span class="bc-modern-emoji">🎥</span><h3>Chamadas e momentos</h3><p>Converse por voz ou vídeo e compartilhe sua tela em dispositivos compatíveis.</p></article>
+        <article class="bc-modern-highlight"><span class="bc-modern-emoji">🇧🇷</span><h3>Uma identidade só nossa</h3><p>Comunidades personalizadas em uma experiência pensada para o Brasil.</p></article>
+      </div>
+    </section>
     <section class="feature-strip" aria-label="Destaques da plataforma">
       <div class="container feature-strip-content">
         <span><span aria-hidden="true">◉</span> Chamadas de voz e vídeo</span>
@@ -217,7 +227,7 @@
         <h2 id="faq-title">Perguntas <span>e respostas.</span></h2>
       </div>
       <div class="faq-list">
-        <details><summary>O BrasilCord funciona no celular?<span aria-hidden="true">+</span></summary><p>No momento, o instalador oficial é voltado ao Windows. Não há um aplicativo móvel oficial anunciado nesta página.</p></details>
+        <details><summary>O BrasilCord funciona no celular?<span aria-hidden="true">+</span></summary><p>Sim! A versão web adaptada ao celular pode ser acessada em <a href="./mobile/?login=1">BrasilCord Mobile</a>. Você também pode usar a opção <a href="./mobile/?install=1">Adicionar à tela inicial</a> no navegador compatível. Alguns recursos variam conforme o dispositivo.</p></details>
         <details><summary>Preciso de uma conta?<span aria-hidden="true">+</span></summary><p>Sim. Para usar as comunidades e mensagens próprias do BrasilCord, é necessário cadastrar uma conta e entrar nela.</p></details>
         <details><summary>Onde encontro as novas versões?<span aria-hidden="true">+</span></summary><p>Os instaladores são publicados no <a href="https://github.com/cdopc7870-web/brasilcord-updates/releases/latest" target="_blank" rel="noopener noreferrer">GitHub Releases oficial</a>. O aplicativo também conta com um mecanismo de atualização.</p></details>
         <details><summary>As chamadas e o compartilhamento de tela estão disponíveis?<span aria-hidden="true">+</span></summary><p>A versão desktop inclui recursos de câmera e compartilhamento de tela diretamente nas calls. A disponibilidade e a qualidade podem variar conforme rede, permissões e dispositivo.</p></details>
